@@ -35,7 +35,7 @@ module.exports = {
   mode: dev ? 'development' : 'production',
   devtool: dev ? 'none' : 'source-map',
   entry: {
-    app: './src/smoothiz-client.js',
+    app: './src/index.js',
   },
   output: {
     path: path.resolve(__dirname, 'build'),
