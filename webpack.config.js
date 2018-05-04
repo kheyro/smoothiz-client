@@ -4,6 +4,7 @@ const dev = process.env.NODE_ENV !== 'production';
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const EslintFormatterPretty = require('eslint-formatter-pretty');
 
@@ -18,6 +19,12 @@ const plugins = [
         formatter: EslintFormatterPretty,
       },
     },
+  }),
+  new HtmlWebpackPlugin({
+    template: './public/index.html',
+    filename: 'index.html',
+    // chunks: ['app'],
+    inject: 'body'
   }),
 ];
 
@@ -40,7 +47,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: '[name].bundle.js',
-    publicPath: ASSET_PATH,
+    // publicPath: ASSET_PATH,
   },
   module: {
     rules: [
