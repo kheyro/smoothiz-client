@@ -16,6 +16,12 @@
         "specialLink": ["to"]
       }
     ],
+    "jsx-a11y/label-has-for": [ 2, {
+      "components": [ "Label" ],
+      "required": {
+        "some": [ "nesting", "id" ]
+      }
+    }],
     "no-underscore-dangle": [
       2,
       { "allow": ["__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"] }
