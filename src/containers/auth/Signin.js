@@ -25,6 +25,18 @@ class Signin extends Component {
       [e.target.name]: e.target.value,
     });
 
+  renderAlert() {
+    if (this.props.errorMessage) {
+      return (
+        <div className="alert alert-danger">
+          <strong>Oops!</strong> {this.props.errorMessage}
+        </div>
+      );
+    }
+
+    return '';
+  }
+
   render() {
     return (
       <div>
@@ -51,6 +63,7 @@ class Signin extends Component {
               value={this.state.password}
             />
           </div>
+          {this.renderAlert()}
           <button type="submit" className="btn btn-primary">Sign in</button>
         </form>
       </div>
@@ -58,4 +71,8 @@ class Signin extends Component {
   }
 }
 
-export default connect(null, { signinUser })(Signin);
+const mapStateToProps = state => ({
+  errorMessage: state.auth.error,
+});
+
+export default connect(mapStateToProps, { signinUser })(Signin);
