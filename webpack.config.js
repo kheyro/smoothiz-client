@@ -47,7 +47,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: '[name].bundle.js',
-    // publicPath: ASSET_PATH,
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -96,6 +96,9 @@ module.exports = {
         ],
       },
     ],
+  },
+  devServer: {
+    historyApiFallback: true,
   },
   plugins,
 };
