@@ -6,8 +6,8 @@ class Signup extends Component {
     this.state = {
       email: '',
       password: '',
+      passwordConfirm: '',
     };
-    this.handleChange = this.handleChange.bind(this);
   }
 
   onFormSubmit = e => {
@@ -23,9 +23,10 @@ class Signup extends Component {
     return (
       <div>
         <form onSubmit={this.onFormSubmit}>
-          <div>
+          <div className="form-group">
             <label htmlFor="email">Email</label>
             <input
+              className="form-control"
               id="email"
               name="email"
               onChange={this.handleChange}
@@ -33,9 +34,10 @@ class Signup extends Component {
               value={this.state.email}
             />
           </div>
-          <div>
+          <div className="form-group">
             <label htmlFor="password">Password</label>
             <input
+              className="form-control"
               id="password"
               name="password"
               onChange={this.handleChange}
@@ -43,7 +45,18 @@ class Signup extends Component {
               value={this.state.password}
             />
           </div>
-          <button type="submit">Sign up</button>
+          <div className="form-group">
+            <label htmlFor="passwordConfirm">Confirm Password</label>
+            <input
+              className="form-control"
+              id="passwordConfirm"
+              name="passwordConfirm"
+              onChange={this.handleChange}
+              type="text"
+              value={this.state.passwordConfirm}
+            />
+          </div>
+          <button type="submit" className="btn btn-primary">Sign up</button>
         </form>
       </div>
     );
