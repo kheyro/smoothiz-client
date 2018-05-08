@@ -1,5 +1,13 @@
 import React from 'react';
 
-const App = () => <div>OK </div>;
+import Header from './containers/Header';
+import './styles/styles.scss';
+
+const App = () => (
+  <div>
+    <Header />
+    Welcome Home!
+  </div>
+);
 
 export default App;
