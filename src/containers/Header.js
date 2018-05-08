@@ -1,7 +1,32 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class Header extends Component {
+  renderLinks() {
+    if (this.props.authenticated) {
+      return (
+        <li className="nav-item">
+          <Link className="nav-link" to="/signout">
+            Sign Out
+          </Link>
+        </li>
+      );
+    }
+    return [
+      <li className="nav-item" key={1}>
+        <Link className="nav-link" to="/signin">
+          Sign In
+        </Link>
+      </li>,
+      <li className="nav-item" key={2}>
+        <Link className="nav-link" to="/signup">
+          Sign Up
+        </Link>
+      </li>,
+    ];
+  }
+
   render() {
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -15,16 +40,7 @@ class Header extends Component {
                 Home
               </Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/signin">
-                Sign in
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/signup">
-                Sign up
-              </Link>
-            </li>
+            {this.renderLinks()}
           </ul>
         </div>
       </nav>
@@ -32,4 +48,8 @@ class Header extends Component {
   }
 }
 
-export default Header;
+const mapStateToProps = state => ({
+  authenticated: state.auth.authenticated,
+});
+
+export default connect(mapStateToProps, null)(Header);
