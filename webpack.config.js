@@ -52,18 +52,23 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/,
+        test: /\.s?css$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: {
-            loader: 'css-loader',
-            options: {
-              sourceMap: true,
-              modules: true,
-              importLoaders: 1,
-              localIdentName: '[name]-[local]___[hash:base64:5]',
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: true,
+                modules: false,
+                importLoaders: 1,
+                // localIdentName: '[name]-[local]___[hash:base64:5]',
+              },
             },
-          },
+            {
+              loader: 'sass-loader',
+            },
+          ],
         }),
       },
       {
