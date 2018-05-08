@@ -1,25 +1,25 @@
 import axios from 'axios';
+import history from '../../config/history';
 import actionTypes from './actionTypes';
 
 const API_SERVER = 'http://localhost:3000';
 
-export function signinUser({email, password}) {
-  // submit to server
-  // - update auth state
-  // - save token
-  // redirect to right route
-  // show error if bad
+export function authError(error) {
+  return {
+    type: actionTypes.AUTH_ERROR,
+    payload: error,
+  };
+}
 
+export function signinUser({ email, password }) {
   return dispatch => {
-    console.log(email, password)
     axios
       .post(`${API_SERVER}/signin`, { email, password })
       .then(response => {
-        console.log(response);
+        dispatch({ type: actionTypes.AUTH_USER });
+        localStorage.setItem('token', response.data.token);
+        history.push('/');
       })
-      .catch(error => console.log(error));
-      // .then(res => res);
-    // dispatch({ type: actionTypes.SIGNIN_USER });
-  }
-
+      .catch(() => dispatch(authError('Bad login info')));
+  };
 }
