@@ -23,3 +23,8 @@ export function signinUser({ email, password }) {
       .catch(() => dispatch(authError('Bad login info')));
   };
 }
+
+export function signoutUser() {
+  localStorage.removeItem('token');
+  return { type: actionTypes.UNAUTH_USER };
+}
