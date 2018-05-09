@@ -28,3 +28,16 @@ export function signoutUser() {
   localStorage.removeItem('token');
   return { type: actionTypes.UNAUTH_USER };
 }
+
+export function signupUser({ email, password }) {
+  return dispatch => {
+    axios
+      .post(`${API_SERVER}/signup`, { email, password })
+      .then(response => {
+        dispatch({ type: actionTypes.AUTH_USER });
+        localStorage.setItem('token', response.data.token);
+        history.push('/');
+      })
+      .catch(error => dispatch(authError(error.response.data.error)));
+  };
+}
