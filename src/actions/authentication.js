@@ -1,6 +1,6 @@
 import axios from 'axios';
-import history from '../../config/history';
 import actionTypes from './actionTypes';
+import history from '../../config/history';
 
 const API_SERVER = 'http://localhost:3000';
 
@@ -18,7 +18,7 @@ export function signinUser({ email, password }) {
       .then(response => {
         dispatch({ type: actionTypes.AUTH_USER });
         localStorage.setItem('token', response.data.token);
-        history.push('/');
+        history.push('/features');
       })
       .catch(() => dispatch(authError('Bad login info')));
   };
@@ -36,7 +36,7 @@ export function signupUser({ email, password }) {
       .then(response => {
         dispatch({ type: actionTypes.AUTH_USER });
         localStorage.setItem('token', response.data.token);
-        history.push('/');
+        history.push('/features');
       })
       .catch(error => dispatch(authError(error.response.data.error)));
   };
