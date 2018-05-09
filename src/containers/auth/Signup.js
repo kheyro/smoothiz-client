@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { signupUser } from '../../actions/authentication';
 
 class Signup extends Component {
   constructor() {
@@ -12,12 +14,28 @@ class Signup extends Component {
 
   onFormSubmit = e => {
     e.preventDefault();
+    this.props.signupUser({
+      email: this.state.email,
+      password: this.state.password,
+    });
   };
 
   handleChange = e =>
     this.setState({
       [e.target.name]: e.target.value,
     });
+
+  renderAlert() {
+    if (this.props.errorMessage) {
+      return (
+        <div className="alert alert-danger">
+          <strong>Oops!</strong> {this.props.errorMessage}
+        </div>
+      );
+    }
+
+    return '';
+  }
 
   render() {
     return (
@@ -56,6 +74,7 @@ class Signup extends Component {
               value={this.state.passwordConfirm}
             />
           </div>
+          {this.renderAlert()}
           <button type="submit" className="btn btn-primary">Sign up</button>
         </form>
       </div>
@@ -63,4 +82,8 @@ class Signup extends Component {
   }
 }
 
-export default Signup;
+const mapStateToProps = state => ({
+  errorMessage: state.auth.error,
+});
+
+export default connect(mapStateToProps, { signupUser })(Signup);
