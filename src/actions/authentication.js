@@ -41,3 +41,13 @@ export function signupUser({ email, password }) {
       .catch(error => dispatch(authError(error.response.data.error)));
   };
 }
+
+export function fetchMessage() {
+  return dispatch => {
+    axios
+      .get(`${API_SERVER}`, {
+        headers: { authorization: localStorage.getItem('token') },
+      })
+      .then(response => console.log(response));
+  }
+}
