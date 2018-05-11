@@ -57,13 +57,19 @@ export class FormValidator {
           response.isValid = false;
           response[fieldName].isValid = false;
           if (method === 'equals') {
-            const matchingFieldName = this.validations.find(
+            let matchingFieldName = this.validations.find(
               fld => fld.fieldName === args[0]
-            ).friendlyName;
+            );
+            matchingFieldName = matchingFieldName.friendlyName
+              ? matchingFieldName.friendlyName
+              : matchingFieldName.fieldName;
             response[fieldName].messages.push(`
-            ${friendlyFieldName} must match ${this.capitalize(
+            ${friendlyFieldName} doesn't match ${this.capitalize(
               matchingFieldName
             )} field`);
+          }
+          if (method === 'isEmail') {
+            response[fieldName].messages.push(`${friendlyFieldName} is not a valid email address`);
           }
           if (method === 'isInt') {
             errorMessage = `${friendlyFieldName} must be a number`;
@@ -86,7 +92,7 @@ export class FormValidator {
         }
       });
     });
-    console.log(response);
+    // console.log(response);
 
     return response;
   }
