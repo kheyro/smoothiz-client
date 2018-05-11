@@ -6,7 +6,7 @@ validator.isNotEmpty = value => !!value.replace(' ', '');
 
 function displayError(field) {
   return (
-    <div className="fv-messages red">
+    <div className="fv-messages text-danger">
       {field.messages.map(message => (
         <div className="fv-message">{message}</div>
       ))}
