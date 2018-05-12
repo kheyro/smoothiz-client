@@ -39,6 +39,7 @@ export class FormValidator {
         let args = [];
         let errorMessage = '';
         let test;
+        const fieldValue = state[fieldName].toString();
         if (typeof rule === 'object') {
           [method] = Object.keys(rule);
           args = rule[method];
@@ -47,13 +48,18 @@ export class FormValidator {
         }
         // Construct function call with right argument format
         if (method === 'equals') {
-          test = validator[method](state[fieldName].toString(), state[args[0]]);
+          test = validator[method](fieldValue, state[args[0]]);
         } else {
-          test = validator[method](state[fieldName].toString(), ...args);
+          test = validator[method](fieldValue, ...args);
         }
 
         // Create response object with error messages
-        if (!test) {
+        // || because validator consider empty as falsy
+        // we don't to test when it is not empty and not required
+        if (
+          (field.rules.includes('isNotEmpty') && !test) ||
+          (fieldValue !== '' && !test)
+        ) {
           response.isValid = false;
           response[fieldName].isValid = false;
           if (method === 'equals') {
@@ -68,8 +74,13 @@ export class FormValidator {
               matchingFieldName
             )} field`);
           }
+          if (method === 'isAlpha') {
+            response[fieldName].messages.push(`
+            ${friendlyFieldName} should only contain letters`);
+          }
           if (method === 'isEmail') {
-            response[fieldName].messages.push(`${friendlyFieldName} is not a valid email address`);
+            response[fieldName].messages.push(`
+            ${friendlyFieldName} is not a valid email address`);
           }
           if (method === 'isInt') {
             errorMessage = `${friendlyFieldName} must be a number`;
@@ -87,7 +98,8 @@ export class FormValidator {
             errorMessage = '';
           }
           if (method === 'isNotEmpty') {
-            response[fieldName].messages.push(`${friendlyFieldName} can't be empty`);
+            response[fieldName].messages.push(`
+            ${friendlyFieldName} can't be empty`);
           }
         }
       });
