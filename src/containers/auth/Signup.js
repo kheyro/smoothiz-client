@@ -86,10 +86,14 @@ class Signup extends Component {
             <FVDisplayError field={this.state.form.lastname} />
           </div>
           <div className="form-group">
+            <label htmlFor="birthday">Birthday</label>
             <DatePicker
-              selected={this.state.birthday}
-              onChange={this.handleChange}
+              className="form-control"
+              dateFormat="MM-DD-YYYY"
+              id="birthday"
               name="birthday"
+              onChange={this.handleChange}
+              selected={this.state.birthday}
             />
           </div>
           <div className="form-group">
@@ -150,6 +154,11 @@ const validation = new FormValidator([
     fieldName: 'lastname',
     friendlyName: 'last name',
     rules: ['isAlpha'],
+  },
+  {
+    fieldName: 'birthday',
+    friendlyName: 'birthday',
+    rules: ['isISO8601'],
   },
   {
     fieldName: 'email',
