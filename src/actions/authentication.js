@@ -29,10 +29,10 @@ export function signoutUser() {
   return { type: actionTypes.UNAUTH_USER };
 }
 
-export function signupUser({ email, password }) {
+export function signupUser(userInfo) {
   return dispatch => {
     axios
-      .post(`${API_SERVER}/signup`, { email, password })
+      .post(`${API_SERVER}/signup`, userInfo)
       .then(response => {
         dispatch({ type: actionTypes.AUTH_USER });
         localStorage.setItem('token', response.data.token);
