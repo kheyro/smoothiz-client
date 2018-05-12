@@ -2,7 +2,7 @@ import React from 'react';
 import validator from 'validator';
 
 // Add isNotEmpty rules to validator package
-validator.isNotEmpty = value => !!value.replace(' ', '');
+validator.isRequired = value => !!value.replace(' ', '');
 
 function displayError(field) {
   return (
@@ -57,7 +57,7 @@ export class FormValidator {
         // || because validator consider empty as falsy
         // we don't to test when it is not empty and not required
         if (
-          (field.rules.includes('isNotEmpty') && !test) ||
+          (field.rules.includes('isRequired') && !test) ||
           (fieldValue !== '' && !test)
         ) {
           response.isValid = false;
@@ -97,9 +97,9 @@ export class FormValidator {
             response[fieldName].messages.push(errorMessage);
             errorMessage = '';
           }
-          if (method === 'isNotEmpty') {
+          if (method === 'isRequired') {
             response[fieldName].messages.push(`
-            ${friendlyFieldName} can't be empty`);
+            ${friendlyFieldName} is required`);
           }
         }
       });
