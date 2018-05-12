@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
 import { signupUser } from '../../actions/authentication';
 import { FormValidator, FVDisplayError } from '../../../helpers/formValidator';
+
+import '../../../node_modules/react-datepicker/dist/react-datepicker.css';
 
 class Signup extends Component {
   constructor() {
@@ -10,6 +14,7 @@ class Signup extends Component {
       firstname: '',
       lastname: '',
       email: '',
+      birthday: moment(),
       password: '',
       passwordConfirm: '',
       form: {},
@@ -28,10 +33,17 @@ class Signup extends Component {
     }
   };
 
-  handleChange = e =>
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
+  handleChange = e => {
+    if (Object.prototype.hasOwnProperty.call(e, '_isAMomentObject')) {
+      this.setState({
+        birthday: e,
+      });
+    } else {
+      this.setState({
+        [e.target.name]: e.target.value,
+      });
+    }
+  };
 
   renderAlert() {
     if (this.props.errorMessage) {
@@ -72,6 +84,13 @@ class Signup extends Component {
               value={this.state.lastname}
             />
             <FVDisplayError field={this.state.form.lastname} />
+          </div>
+          <div className="form-group">
+            <DatePicker
+              selected={this.state.birthday}
+              onChange={this.handleChange}
+              name="birthday"
+            />
           </div>
           <div className="form-group">
             <label htmlFor="email">Email</label>
