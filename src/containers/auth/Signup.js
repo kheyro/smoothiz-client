@@ -7,6 +7,8 @@ class Signup extends Component {
   constructor() {
     super();
     this.state = {
+      firstname: '',
+      lastname: '',
       email: '',
       password: '',
       passwordConfirm: '',
@@ -47,6 +49,30 @@ class Signup extends Component {
     return (
       <div>
         <form onSubmit={this.onFormSubmit}>
+          <div className="form-group">
+            <label htmlFor="firstName">First name</label>
+            <input
+              className="form-control"
+              id="firstname"
+              name="firstname"
+              onChange={this.handleChange}
+              type="text"
+              value={this.state.firstname}
+            />
+            <FVDisplayError field={this.state.form.firstname} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="lastName">Last name</label>
+            <input
+              className="form-control"
+              id="lastname"
+              name="lastname"
+              onChange={this.handleChange}
+              type="text"
+              value={this.state.lastname}
+            />
+            <FVDisplayError field={this.state.form.lastname} />
+          </div>
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input
@@ -97,18 +123,28 @@ const mapStateToProps = state => ({
 
 const validation = new FormValidator([
   {
+    fieldName: 'firstname',
+    friendlyName: 'first name',
+    rules: ['isAlpha'],
+  },
+  {
+    fieldName: 'lastname',
+    friendlyName: 'last name',
+    rules: ['isAlpha'],
+  },
+  {
     fieldName: 'email',
     friendlyName: 'email',
-    rules: ['isNotEmpty', 'isEmail'],
+    rules: ['isRequired', 'isEmail'],
   },
   {
     fieldName: 'password',
-    rules: ['isNotEmpty'],
+    rules: ['isRequired'],
   },
   {
     fieldName: 'passwordConfirm',
     friendlyName: 'password confirmation',
-    rules: ['isNotEmpty', { equals: ['password'] }],
+    rules: ['isRequired', { equals: ['password'] }],
   },
 ]);
 
