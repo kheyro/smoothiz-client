@@ -101,6 +101,10 @@ export class FormValidator {
             response[fieldName].messages.push(`
             ${friendlyFieldName} is required`);
           }
+          if (method === 'isISO8601') {
+            response[fieldName].messages.push(`
+            ${friendlyFieldName} is not a valid date`);
+          }
         }
       });
     });
