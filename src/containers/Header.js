@@ -3,15 +3,27 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 class Header extends Component {
+  constructor() {
+    super();
+    this.user = JSON.parse(localStorage.getItem('user'));
+  }
   renderLinks() {
     if (this.props.authenticated) {
-      return (
+      return [
+        <li className="nav-item">
+          <Link
+            className="nav-link"
+            to={{ pathname: `/users/${this.user.id}` }}
+          >
+            My Account
+          </Link>
+        </li>,
         <li className="nav-item">
           <Link className="nav-link" to="/signout">
             Sign Out
           </Link>
-        </li>
-      );
+        </li>,
+      ];
     }
     return [
       <li className="nav-item" key={1}>
