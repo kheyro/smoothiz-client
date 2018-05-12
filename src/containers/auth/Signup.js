@@ -123,7 +123,7 @@ class Signup extends Component {
               id="password"
               name="password"
               onChange={this.handleChange}
-              type="text"
+              type="password"
               value={this.state.password}
             />
             <FVDisplayError field={this.state.form.password} />
@@ -135,7 +135,7 @@ class Signup extends Component {
               id="passwordConfirm"
               name="passwordConfirm"
               onChange={this.handleChange}
-              type="text"
+              type="password"
               value={this.state.passwordConfirm}
             />
             <FVDisplayError field={this.state.form.passwordConfirm} />
