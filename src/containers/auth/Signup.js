@@ -23,12 +23,19 @@ class Signup extends Component {
 
   onFormSubmit = e => {
     e.preventDefault();
-    const form = validation.validate(this.state);
+    const modState = Object.assign({}, this.state, {
+      birthday: this.state.birthday.format('YYYY-MM-DD'),
+    });
+    const form = validation.validate(modState);
     this.setState({ form });
     if (form.isValid) {
+      const { firstname, lastname, email, password } = this.state;
       this.props.signupUser({
-        email: this.state.email,
-        password: this.state.password,
+        firstname,
+        lastname,
+        birthday: this.state.birthday.format('YYYY-MM-DD'),
+        email,
+        password,
       });
     }
   };
@@ -89,12 +96,13 @@ class Signup extends Component {
             <label htmlFor="birthday">Birthday</label>
             <DatePicker
               className="form-control"
-              dateFormat="MM-DD-YYYY"
+              dateFormat="MM/DD/YYYY"
               id="birthday"
               name="birthday"
               onChange={this.handleChange}
               selected={this.state.birthday}
             />
+            <FVDisplayError field={this.state.form.birthday} />
           </div>
           <div className="form-group">
             <label htmlFor="email">Email</label>
