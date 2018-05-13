@@ -15,7 +15,7 @@ class Header extends Component {
             className="nav-link"
             to={{ pathname: `/users/${this.user.id}` }}
           >
-            My Account
+            My Smoothies
           </Link>
         </li>,
         <li className="nav-item">
