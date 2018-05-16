@@ -3,17 +3,13 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 class Header extends Component {
-  constructor() {
-    super();
-    this.user = JSON.parse(localStorage.getItem('user'));
-  }
   renderLinks() {
-    if (this.props.authenticated) {
+    if (this.props.auth.authenticated) {
       return [
         <li className="nav-item">
           <Link
             className="nav-link"
-            to={{ pathname: `/users/${this.user.id}` }}
+            to={{ pathname: `/users/${this.props.auth.user.id}` }}
           >
             My Smoothies
           </Link>
@@ -61,7 +57,7 @@ class Header extends Component {
 }
 
 const mapStateToProps = state => ({
-  authenticated: state.auth.authenticated,
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, null)(Header);
