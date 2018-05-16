@@ -8,8 +8,8 @@ import actionTypes from './actions/actionTypes';
 
 import App from './App';
 
-const token = localStorage.getItem('token');
-if (token) store.dispatch({ type: actionTypes.AUTH_USER });
+// const token = localStorage.getItem('token');
+// if (token) store.dispatch({ type: actionTypes.AUTH_USER });
 
 ReactDOM.render(
   <Provider store={store}>
