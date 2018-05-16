@@ -4,11 +4,12 @@ class StateLoader {
   loadState() {
     try {
       const serializedState = localStorage.getItem('auth');
-      if (serializedState === null) {
+      const token = localStorage.getItem('token');
+      // token === null to check for token presence, if not, log him out
+      if (serializedState === null || token === null) {
         return undefined;
-      } else {
-        return JSON.parse(serializedState);
       }
+      return JSON.parse(serializedState);
     } catch (err) {
       return undefined;
     }
