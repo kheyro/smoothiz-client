@@ -4,7 +4,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 import { FormValidator, FVDisplayError } from '../../../helpers/formValidator';
 import { getCategories } from '../../actions/category';
-import { createSmoothy } from '../../actions/smoothie';
+import { createSmoothy, editSmoothie } from '../../actions/smoothie';
 import { getUser } from '../../actions/user';
 
 class UserSmoothies extends Component {
@@ -18,7 +18,7 @@ class UserSmoothies extends Component {
       categoryIds: [0],
       form: {},
       modal: false,
-      currentlyEditing: 0,
+      editingId: 0,
     };
   }
   componentDidMount() {
@@ -30,11 +30,15 @@ class UserSmoothies extends Component {
     const form = validation.validate(this.state);
     this.setState({ form }, () => {
       if (this.state.form.isValid) {
-        this.props.createSmoothy(this.state).then(() => {
-          this.resetForm();
-          // call action to refresh store
-          this.props.getUser(this.props.match.params.id);
-        });
+        if (this.state.editingId > 0) {
+          this.props.editSmoothie(this.state);
+        } else {
+          this.props.createSmoothy(this.state).then(() => {
+            this.resetForm();
+            // call action to refresh store
+            this.props.getUser(this.props.match.params.id);
+          });
+        }
       }
     });
   };
@@ -69,6 +73,7 @@ class UserSmoothies extends Component {
       description: '',
       recipe: '',
       form: {},
+      editingId: 0,
     });
   }
   renderCategoryIds() {
@@ -128,7 +133,7 @@ class UserSmoothies extends Component {
       recipe,
       visibility,
       categoryIds,
-      currentlyEditing: id,
+      editingId: id,
     });
     this.toggle();
   }
@@ -217,7 +222,7 @@ class UserSmoothies extends Component {
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={this.handleFormSubmit}>
-              {(this.state.currentlyEditing > 0 && 'Edit Smoothie') ||
+              {(this.state.editingId > 0 && 'Edit Smoothie') ||
                 'Add Smoothie'}
             </Button>{' '}
             <Button color="secondary" onClick={this.toggle}>
@@ -261,5 +266,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   getCategories,
   createSmoothy,
+  editSmoothie,
   getUser,
 })(UserSmoothies);
