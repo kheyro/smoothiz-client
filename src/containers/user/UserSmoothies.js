@@ -26,6 +26,11 @@ class UserSmoothies extends Component {
     this.props.getCategories();
     this.props.getUser(this.props.match.params.id);
   }
+  componentDidUpdate(prevProps) {
+    // Fix issue if user navigate between user page
+    if (prevProps.match.params.id !== this.props.match.params.id)
+      this.props.getUser(this.props.match.params.id);
+  }
   setError(status, message) {
     return this.setState({
       error: { status, message },
