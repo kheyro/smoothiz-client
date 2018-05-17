@@ -30,3 +30,13 @@ export function editSmoothie(data) {
       .then(res => res)
       .catch(err => console.log(err));
 }
+
+export function deleteSmoothie(smoothieId) {
+  return dispatch =>
+    axios
+      .delete(`${API_SERVER}/smoothies/${smoothieId}`, {
+        headers: { authorization: localStorage.getItem('token') },
+      })
+      .then(res => res)
+      .catch(err => console.log(err));
+}
