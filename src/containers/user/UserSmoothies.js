@@ -4,7 +4,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 import { FormValidator, FVDisplayError } from '../../../helpers/formValidator';
 import { getCategories } from '../../actions/category';
-import { createSmoothy, editSmoothie } from '../../actions/smoothie';
+import { createSmoothy, editSmoothie, deleteSmoothie } from '../../actions/smoothie';
 import { getUser } from '../../actions/user';
 
 class UserSmoothies extends Component {
@@ -155,6 +155,11 @@ class UserSmoothies extends Component {
     });
     this.toggle();
   }
+  deleteSmoothie(smoothieId) {
+    this.props.deleteSmoothie(smoothieId).then(() =>
+      this.props.getUser(this.props.match.params.id)
+    );
+  }
   renderSmoothies() {
     if (this.props.currentUser.smoothies) {
       return this.props.currentUser.smoothies.map(smoothie => (
@@ -292,5 +297,6 @@ export default connect(mapStateToProps, {
   getCategories,
   createSmoothy,
   editSmoothie,
+  deleteSmoothie,
   getUser,
 })(UserSmoothies);
