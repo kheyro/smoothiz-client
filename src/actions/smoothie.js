@@ -9,7 +9,7 @@ export function createSmoothy(data) {
       .post(`${API_SERVER}/smoothies`, data, {
         headers: { authorization: localStorage.getItem('token') },
       })
-      .then(res => console.log(res))
+      .then(res => res)
       .catch(err => console.log(err));
 }
 
@@ -17,7 +17,7 @@ export function getSmoothies() {
   return dispatch =>
     axios
       .get(`${API_SERVER}/smoothies`)
-      .then(res => console.log(res))
+      .then(res => res)
       .catch(err => console.log(err));
 }
 
@@ -27,6 +27,6 @@ export function editSmoothie(data) {
       .patch(`${API_SERVER}/smoothies/${data.editingId}`, data, {
         headers: { authorization: localStorage.getItem('token') },
       })
-      .then(res => console.log(res))
+      .then(res => res)
       .catch(err => console.log(err));
 }

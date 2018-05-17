@@ -19,11 +19,17 @@ class UserSmoothies extends Component {
       form: {},
       modal: false,
       editingId: 0,
+      error: { status: false, message: '' },
     };
   }
   componentDidMount() {
     this.props.getCategories();
     this.props.getUser(this.props.match.params.id);
+  }
+  setError(status, message) {
+    return this.setState({
+      error: { status, message },
+    });
   }
   handleFormSubmit = e => {
     e.preventDefault();
@@ -31,12 +37,20 @@ class UserSmoothies extends Component {
     this.setState({ form }, () => {
       if (this.state.form.isValid) {
         if (this.state.editingId > 0) {
-          this.props.editSmoothie(this.state);
+          this.props.editSmoothie(this.state).then(res => {
+            if (res.status === 200)
+              return this.setError(false, 'Changes successfully saved');
+            return this.setError(true, 'An error appeared while saving');
+          });
         } else {
-          this.props.createSmoothy(this.state).then(() => {
-            this.resetForm();
-            // call action to refresh store
-            this.props.getUser(this.props.match.params.id);
+          this.props.createSmoothy(this.state).then(res => {
+            if (res.status === 201) {
+              this.resetForm();
+              // call action to refresh store
+              this.props.getUser(this.props.match.params.id);
+              return this.setError(false, 'Smoothie successfully added');
+            }
+            return this.setError(true, 'An error appeared while saving');
           });
         }
       }
@@ -74,6 +88,7 @@ class UserSmoothies extends Component {
       recipe: '',
       form: {},
       editingId: 0,
+      error: { status: false, message: '' },
     });
   }
   renderCategoryIds() {
@@ -221,6 +236,10 @@ class UserSmoothies extends Component {
             </form>
           </ModalBody>
           <ModalFooter>
+            <div className="d-inline-block">
+              {this.state.error.status && this.state.error.message && <div className="text-danger"><small>{this.state.error.message}</small></div>}
+              {!this.state.error.status && this.state.error.message !== '' && <div className="text-success"><small>{this.state.error.message}</small></div>}
+            </div>
             <Button color="primary" onClick={this.handleFormSubmit}>
               {(this.state.editingId > 0 && 'Edit Smoothie') ||
                 'Add Smoothie'}
