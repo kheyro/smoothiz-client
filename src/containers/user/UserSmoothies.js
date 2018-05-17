@@ -38,8 +38,11 @@ class UserSmoothies extends Component {
       if (this.state.form.isValid) {
         if (this.state.editingId > 0) {
           this.props.editSmoothie(this.state).then(res => {
-            if (res.status === 200)
+            if (res.status === 200) {
+              // call action to refresh store
+              this.props.getUser(this.props.match.params.id);
               return this.setError(false, 'Changes successfully saved');
+            }
             return this.setError(true, 'An error appeared while saving');
           });
         } else {
