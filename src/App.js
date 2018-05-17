@@ -16,14 +16,16 @@ import './styles/styles.scss';
 const App = () => (
   <div>
     <Header />
-    <Switch>
-      <Route path="/signin" component={Signin} />
-      <Route path="/signup" component={Signup} />
-      <Route path="/signout" component={Signout} />
-      <Route path="/features" component={RequireAuth(Features)} />
-      <Route path="/users/:id" component={UserSmoothies} />
-      <Route path="/formvalidator" component={FormValidator} />
-    </Switch>
+    <div className="container">
+      <Switch>
+        <Route path="/signin" component={Signin} />
+        <Route path="/signup" component={Signup} />
+        <Route path="/signout" component={Signout} />
+        <Route path="/features" component={RequireAuth(Features)} />
+        <Route path="/users/:id" component={UserSmoothies} />
+        <Route path="/formvalidator" component={FormValidator} />
+      </Switch>
+    </div>
   </div>
 );
 
