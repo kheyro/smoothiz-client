@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux';
 import { auth } from './authentication';
 import categories from './category';
+import currentUser from './currentUser';
 
-const rootReducer = combineReducers({ auth, categories });
+const rootReducer = combineReducers({ auth, categories, currentUser });
 
 /*
 {
