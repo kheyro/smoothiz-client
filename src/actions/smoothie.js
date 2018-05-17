@@ -12,3 +12,21 @@ export function createSmoothy(data) {
       .then(res => console.log(res))
       .catch(err => console.log(err));
 }
+
+export function getSmoothies() {
+  return dispatch =>
+    axios
+      .get(`${API_SERVER}/smoothies`)
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
+}
+
+export function editSmoothie(data) {
+  return dispatch =>
+    axios
+      .patch(`${API_SERVER}/smoothies/${data.editingId}`, data, {
+        headers: { authorization: localStorage.getItem('token') },
+      })
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
+}
