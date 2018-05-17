@@ -165,12 +165,17 @@ class UserSmoothies extends Component {
       return this.props.currentUser.smoothies.map(smoothie => (
         <div key={smoothie.id}>
           <h6>{smoothie.name}</h6>
-          <p>
-            <button onClick={() => this.editSmoothie(smoothie.id)}>Edit</button>
-            <button onClick={() => this.deleteSmoothie(smoothie.id)}>
-              Delete
-            </button>
-          </p>
+          {this.props.auth.authenticated &&
+            this.props.auth.user.id === +this.props.match.params.id && (
+              <p>
+                <button onClick={() => this.editSmoothie(smoothie.id)}>
+                  Edit
+                </button>
+                <button onClick={() => this.deleteSmoothie(smoothie.id)}>
+                  Delete
+                </button>
+              </p>
+            )}
         </div>
       ));
     }
@@ -187,9 +192,11 @@ class UserSmoothies extends Component {
   render() {
     return (
       <div>
-        <Button color="danger" onClick={this.toggle}>
-          Smoothiz
-        </Button>
+        {this.props.auth.authenticated && (
+          <Button color="danger" onClick={this.toggle}>
+            Smoothiz
+          </Button>
+        )}
         <Modal
           isOpen={this.state.modal}
           toggle={this.toggle}
