@@ -159,6 +159,7 @@ class UserSmoothies extends Component {
           <h6>{smoothie.name}</h6>
           <p>
             <button onClick={() => this.editSmoothie(smoothie.id)}>Edit</button>
+            <button onClick={() => this.editDelete(smoothie.id)}>Delete</button>
           </p>
         </div>
       ));
