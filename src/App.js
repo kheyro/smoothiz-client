@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
 import { Switch, Route } from 'react-router';
 
 import Header from './containers/Header';
@@ -17,9 +16,8 @@ import './styles/styles.scss';
 class App extends Component {
   componentWillUpdate(nextProps) {
     const { location } = this.props;
-    // set previousLocation if props.location is not modal
     if (
-      nextProps.history.action !== "POP" &&
+      nextProps.history.action !== 'POP' &&
       (!location.state || !location.state.modal)
     ) {
       this.previousLocation = this.props.location;
@@ -35,17 +33,19 @@ class App extends Component {
     );
     return (
       <div>
-        <Header/>
+        <Header />
         <div className="container">
           <Switch location={isModal ? this.previousLocation : location}>
-            <Route path="/signin" component={Signin}/>
-            <Route path="/signup" component={Signup}/>
-            <Route path="/signout" component={Signout}/>
-            <Route path="/features" component={RequireAuth(Features)}/>
-            <Route path="/users/:id" component={UserSmoothies}/>
-            <Route path="/formvalidator" component={FormValidator}/>
+            <Route path="/signin" component={Signin} />
+            <Route path="/signup" component={Signup} />
+            <Route path="/signout" component={Signout} />
+            <Route path="/features" component={RequireAuth(Features)} />
+            <Route path="/users/:id" component={UserSmoothies} />
+            <Route path="/formvalidator" component={FormValidator} />
           </Switch>
-          {isModal ? <Route path="/smoothies/:id" component={SmoothieShow} /> : null }
+          {isModal ? (
+            <Route path="/smoothies/:id" component={SmoothieShow} />
+          ) : null}
         </div>
       </div>
     );
