@@ -4,16 +4,8 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { getSmoothie } from '../../actions/smoothie';
 
 class SmoothieShow extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      modal: true,
-    };
-    console.log('called constructor?', this.props);
-  }
   componentDidMount() {
     this.props.getSmoothie(this.props.match.params.id);
-    console.log('called?', this.props);
   }
   closeModal = e => {
     e.stopPropagation();
@@ -23,21 +15,31 @@ class SmoothieShow extends Component {
     return (
       <div tabIndex="-1">
         <div className="">
-          <div className="modal fade show" role="dialog" tabIndex="-1" className="d-block" style={{ position: 'relative', zIndex: '1050' }}>
+          <div
+            className="modal fade show d-block"
+            role="dialog"
+            style={{ position: 'relative', zIndex: '1050' }}
+            tabIndex="-1"
+          >
             <div className="modal-dialog" role="document">
               <div className="modal-content">
                 <div className="modal-header">
-                  <h5 className="modal-title">{this.props.smoothie && this.props.smoothie.name}</h5>
-                  <button type="button" className="close" aria-label="Close" onClick={this.closeModal}>
+                  <h1 className="modal-title">
+                    {this.props.smoothie && this.props.smoothie.name}
+                  </h1>
+                  <button
+                    aria-label="Close"
+                    className="close"
+                    onClick={this.closeModal}
+                    type="button"
+                  >
                     <span aria-hidden="true">×</span>
                   </button>
                 </div>
                 <div className="modal-body">
                   {this.props.smoothie && this.props.smoothie.description}
                 </div>
-                <div className="modal-footer">
-                  Footer
-                </div>
+                <div className="modal-footer">Footer</div>
               </div>
             </div>
           </div>
