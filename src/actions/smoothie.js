@@ -42,3 +42,13 @@ export function deleteSmoothie(smoothieId) {
       .then(res => res)
       .catch(err => console.log(err));
 }
+
+export function likeSmoothie(smoothieId) {
+  return dispatch =>
+    axios
+      .get(`${API_SERVER}/smoothies/${smoothieId}/like`, {
+        headers: { authorization: localStorage.getItem('token') },
+      })
+      .then(res => res)
+      .catch(err => console.log(err));
+}
