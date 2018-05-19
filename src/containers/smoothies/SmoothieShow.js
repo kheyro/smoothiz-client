@@ -15,6 +15,10 @@ class SmoothieShow extends Component {
     this.props.getSmoothie(this.props.match.params.id);
     console.log('called?', this.props);
   }
+  closeModal = e => {
+    e.stopPropagation();
+    this.props.history.goBack();
+  };
   render() {
     return (
       <div tabIndex="-1">
@@ -24,7 +28,7 @@ class SmoothieShow extends Component {
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title">{this.props.smoothie && this.props.smoothie.name}</h5>
-                  <button type="button" className="close" aria-label="Close">
+                  <button type="button" className="close" aria-label="Close" onClick={this.closeModal}>
                     <span aria-hidden="true">×</span>
                   </button>
                 </div>
@@ -37,7 +41,7 @@ class SmoothieShow extends Component {
               </div>
             </div>
           </div>
-          <div className="modal-backdrop fade show"></div>
+          <div className="modal-backdrop fade show" onClick={this.closeModal}></div>
         </div>
       </div>
     );
