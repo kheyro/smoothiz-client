@@ -265,7 +265,12 @@ class UserSmoothies extends Component {
           </ModalBody>
           <ModalFooter>
             <div className="d-inline-block">
-              {this.state.error.status && this.state.error.message && <div className="text-danger"><small>{this.state.error.message}</small></div>}
+              {this.state.error.status &&
+                this.state.error.message && (
+                  <div className="text-danger">
+                    <small>{this.state.error.message}</small>
+                  </div>
+                )}
               {!this.state.error.status && this.state.error.message !== '' && <div className="text-success"><small>{this.state.error.message}</small></div>}
             </div>
             <Button color="primary" onClick={this.handleFormSubmit}>
@@ -286,7 +291,6 @@ class UserSmoothies extends Component {
             {this.renderSmoothies()}
           </div>
         </div>
-
       </div>
     );
   }
