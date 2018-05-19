@@ -2,8 +2,14 @@ import { combineReducers } from 'redux';
 import { auth } from './authentication';
 import categories from './category';
 import currentUser from './currentUser';
+import smoothies from './smoothie';
 
-const rootReducer = combineReducers({ auth, categories, currentUser });
+const rootReducer = combineReducers({
+  auth,
+  categories,
+  currentUser,
+  smoothies,
+});
 
 /*
 {
