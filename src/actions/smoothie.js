@@ -49,6 +49,6 @@ export function likeSmoothie(smoothieId) {
       .get(`${API_SERVER}/smoothies/${smoothieId}/like`, {
         headers: { authorization: localStorage.getItem('token') },
       })
-      .then(res => res)
+      .then(() => this.getSmoothie(smoothieId))
       .catch(err => console.log(err));
 }
