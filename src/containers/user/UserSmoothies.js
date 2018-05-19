@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 import { FormValidator, FVDisplayError } from '../../../helpers/formValidator';
@@ -169,7 +170,11 @@ class UserSmoothies extends Component {
     if (this.props.currentUser.smoothies) {
       return this.props.currentUser.smoothies.map(smoothie => (
         <div key={smoothie.id}>
-          <h6>{smoothie.name}</h6>
+          <h6>
+            <Link to={{ pathname: `/smoothies/${smoothie.id}` }}>
+              {smoothie.name}
+            </Link>
+          </h6>
           {this.props.auth.authenticated &&
             this.props.auth.user.id === +this.props.match.params.id && (
               <p>
