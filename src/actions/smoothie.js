@@ -13,11 +13,13 @@ export function createSmoothy(data) {
       .catch(err => console.log(err));
 }
 
-export function getSmoothies() {
+export function getSmoothie(smoothieId) {
   return dispatch =>
     axios
-      .get(`${API_SERVER}/smoothies`)
-      .then(res => res)
+      .get(`${API_SERVER}/smoothies/${smoothieId}`)
+      .then(res =>
+        dispatch({ type: actionTypes.GET_SMOOTHIE, payload: res.data.smoothie })
+      )
       .catch(err => console.log(err));
 }
 
