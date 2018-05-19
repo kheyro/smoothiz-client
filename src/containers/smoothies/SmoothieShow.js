@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { getSmoothie } from '../../actions/smoothie';
+import { getSmoothie, likeSmoothie } from '../../actions/smoothie';
 
 class SmoothieShow extends Component {
   componentDidMount() {
@@ -10,6 +10,10 @@ class SmoothieShow extends Component {
   closeModal = e => {
     e.stopPropagation();
     this.props.history.goBack();
+  };
+  like = e => {
+    e.preventDefault();
+    this.props.likeSmoothie(this.props.match.params.id);
   };
   render() {
     return (
@@ -38,6 +42,12 @@ class SmoothieShow extends Component {
                 </div>
                 <div className="modal-body">
                   {this.props.smoothie && this.props.smoothie.description}
+                  {
+                    this.props.liked &&
+                    <button onClick={this.like}>Unlike</button> ||
+                    <button onClick={this.like}>Like</button>
+                  }
+                  <p>like: {this.props.smoothie.likeUsers.length}</p>
                 </div>
                 <div className="modal-footer">Footer</div>
               </div>
@@ -50,8 +60,14 @@ class SmoothieShow extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  smoothie: state.smoothies.currentSmoothie,
-});
+const mapStateToProps = (state, props) => {
+  const liked = !!state.smoothies.currentSmoothie.likeUsers.find(
+    user => user.user_id === state.currentUser.id
+  );
+  return {
+    smoothie: state.smoothies.currentSmoothie,
+    liked,
+  };
+};
 
-export default connect(mapStateToProps, { getSmoothie })(SmoothieShow);
+export default connect(mapStateToProps, { getSmoothie, likeSmoothie })(SmoothieShow);
