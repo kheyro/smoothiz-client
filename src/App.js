@@ -16,21 +16,15 @@ import './styles/styles.scss';
 class App extends Component {
   componentWillUpdate(nextProps) {
     const { location } = this.props;
-    if (
-      nextProps.history.action !== 'POP' &&
-      (!location.state || !location.state.modal)
-    ) {
+    if (nextProps.history.action !== 'POP') {
       this.previousLocation = this.props.location;
     }
   }
+  previousLocation = this.props.location;
 
   render() {
     const { location } = this.props;
-    const isModal = !!(
-      location.state &&
-      location.state.modal &&
-      this.previousLocation !== location
-    );
+    const isModal = location.pathname.match(/\/smoothies\/\d+$/); // Unsafe: look for more accurate test as match returns an array
     return (
       <div>
         <Header />
@@ -43,9 +37,7 @@ class App extends Component {
             <Route path="/users/:id" component={UserSmoothies} />
             <Route path="/formvalidator" component={FormValidator} />
           </Switch>
-          {isModal ? (
-            <Route path="/smoothies/:id" component={SmoothieShow} />
-          ) : null}
+          <Route path="/smoothies/:id" component={SmoothieShow} />
         </div>
       </div>
     );
