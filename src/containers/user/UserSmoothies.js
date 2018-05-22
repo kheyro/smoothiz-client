@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 import { FormValidator, FVDisplayError } from '../../../helpers/formValidator';
 import { getCategories } from '../../actions/category';
-import { createSmoothy, editSmoothie, deleteSmoothie } from '../../actions/smoothie';
+import {
+  createSmoothy,
+  editSmoothie,
+  deleteSmoothie,
+} from '../../actions/smoothie';
 import { getUser } from '../../actions/user';
+import { signinFromSocial } from '../../actions/authentication';
 
 class UserSmoothies extends Component {
   constructor() {
@@ -26,6 +32,10 @@ class UserSmoothies extends Component {
   componentDidMount() {
     this.props.getCategories();
     this.props.getUser(this.props.match.params.id);
+    // if comes from redirection social signin
+    if (Cookies.get('token')) {
+      this.props.signinFromSocial();
+    }
   }
   componentDidUpdate(prevProps) {
     // Fix issue if user navigate between user page
@@ -320,4 +330,5 @@ export default connect(mapStateToProps, {
   editSmoothie,
   deleteSmoothie,
   getUser,
+  signinFromSocial,
 })(UserSmoothies);
