@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import globals from '../../../config/globals';
 import { FormValidator, FVDisplayError } from '../../../helpers/formValidator';
 import { signinUser } from '../../actions/authentication';
 
@@ -72,7 +73,13 @@ class Signin extends Component {
             <FVDisplayError field={this.state.form.password} />
           </div>
           {this.renderAlert()}
-          <button type="submit" className="btn btn-primary">Sign in</button>
+          <button type="submit" className="btn btn-primary mr-2">Sign in</button>
+          <a
+            className="btn btn-info"
+            href={`${globals.API_SERVER}/auth/facebook`}
+          >
+            Signin with Facebook
+          </a>
         </form>
       </div>
     );

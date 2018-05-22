@@ -6,6 +6,7 @@ import { signupUser } from '../../actions/authentication';
 import { FormValidator, FVDisplayError } from '../../../helpers/formValidator';
 
 import '../../../node_modules/react-datepicker/dist/react-datepicker.css';
+import globals from '../../../config/globals';
 
 class Signup extends Component {
   constructor() {
@@ -141,7 +142,13 @@ class Signup extends Component {
             <FVDisplayError field={this.state.form.passwordConfirm} />
           </div>
           {this.renderAlert()}
-          <button type="submit" className="btn btn-primary">Sign up</button>
+          <button type="submit" className="btn btn-primary mr-2">Sign up</button>
+          <a
+            className="btn btn-info"
+            href={`${globals.API_SERVER}/auth/facebook`}
+          >
+            Signin with Facebook
+          </a>
         </form>
       </div>
     );
