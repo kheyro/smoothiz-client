@@ -64,10 +64,12 @@ class SmoothieShow extends Component {
   }
 }
 
-const mapStateToProps = (state, props) => {
-  const liked = !!state.smoothies.currentSmoothie.likeUsers.find(
-    user => user.user_id === state.currentUser.id
-  );
+const mapStateToProps = state => {
+  const liked =
+    state.smoothies.currentSmoothie &&
+    state.smoothies.currentSmoothie.likeUsers.some(
+      user => user.user_id === state.currentUser.id
+    );
   return {
     smoothie: state.smoothies.currentSmoothie,
     liked,
