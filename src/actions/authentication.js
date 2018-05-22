@@ -1,6 +1,7 @@
 import axios from 'axios';
 import actionTypes from './actionTypes';
 import history from '../../config/history';
+import Cookies from 'js-cookie';
 
 const API_SERVER = 'http://localhost:3000';
 
@@ -9,6 +10,17 @@ export function authError(error) {
     type: actionTypes.AUTH_ERROR,
     payload: error,
   };
+}
+
+export function signinFromSocial() {
+  const cookiedToken = Cookies.get('token');
+  const cookiedUser = JSON.parse(Cookies.get('user'));
+  if (cookiedToken && cookiedUser) {
+    localStorage.setItem('token', cookiedToken);
+    Cookies.remove('token');
+    return { type: actionTypes.AUTH_USER, payload: cookiedUser };
+  }
+  return false;
 }
 
 export function signinUser({ email, password }) {
