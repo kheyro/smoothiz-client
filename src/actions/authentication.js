@@ -18,6 +18,7 @@ export function signinFromSocial() {
   if (cookiedToken && cookiedUser) {
     localStorage.setItem('token', cookiedToken);
     Cookies.remove('token');
+    Cookies.remove('user');
     return { type: actionTypes.AUTH_USER, payload: cookiedUser };
   }
   return false;
