@@ -11,7 +11,7 @@ class CategoryLinks extends Component {
   render() {
     const categoryLink = this.props.categories.map(category => (
       <li key={category.id}>
-        <Link to={{ pathname: `/category/${category.id}` }}>
+        <Link to={{ pathname: `/categories/${category.id}` }}>
           {category.name}
         </Link>
       </li>
