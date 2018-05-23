@@ -13,6 +13,19 @@ export function createSmoothie(data) {
       .catch(err => console.log(err));
 }
 
+export function getSmoothies() {
+  return dispatch =>
+    axios
+      .get(`${API_SERVER}/smoothies`)
+      .then(res =>
+        dispatch({
+          type: actionTypes.GET_SMOOTHIES,
+          payload: res.data.smoothies
+        })
+      )
+      .catch(err => console.log(err));
+}
+
 export function getSmoothie(smoothieId) {
   return dispatch =>
     axios
