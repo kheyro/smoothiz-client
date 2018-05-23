@@ -9,7 +9,7 @@ import SmoothieList from '../smoothies/SmoothieList';
 import UserInfo from '../../components/user/UserInfo';
 import UserLinks from '../../components/user/UserLinks';
 
-class UserSmoothies extends Component {
+class UserPage extends Component {
   constructor() {
     super();
   }
@@ -59,4 +59,4 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   getUser,
   signinFromSocial,
-})(UserSmoothies);
+})(UserPage);
