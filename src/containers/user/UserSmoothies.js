@@ -7,6 +7,7 @@ import { signinFromSocial } from '../../actions/authentication';
 
 import SmoothieList from '../smoothies/SmoothieList';
 import UserInfo from '../../components/user/UserInfo';
+import UserLinks from '../../components/user/UserLinks';
 
 class UserSmoothies extends Component {
   constructor() {
@@ -30,11 +31,18 @@ class UserSmoothies extends Component {
         <div className="row">
           <div className="col-3">
             <UserInfo user={this.props.currentUser} />
+            {this.props.auth.authenticated && (
+              <UserLinks userId={this.props.auth.user.id} />
+            )}
           </div>
           <div className="col-9">
             <SmoothieList
               displayAction
-              smoothies={this.props.currentUser.smoothies}
+              smoothies={
+                /\/smoothies\/liked/.test(this.props.location.pathname) ?
+                this.props.currentUser.likeSmoothies :
+                this.props.currentUser.smoothies
+              }
             />
           </div>
         </div>
