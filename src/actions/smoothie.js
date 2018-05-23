@@ -3,7 +3,7 @@ import actionTypes from './actionTypes';
 
 const API_SERVER = 'http://localhost:3000';
 
-export function createSmoothy(data) {
+export function createSmoothie(data) {
   return dispatch =>
     axios
       .post(`${API_SERVER}/smoothies`, data, {
