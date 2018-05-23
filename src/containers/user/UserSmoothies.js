@@ -6,6 +6,7 @@ import { getUser } from '../../actions/user';
 import { signinFromSocial } from '../../actions/authentication';
 
 import SmoothieList from '../smoothies/SmoothieList';
+import UserInfo from '../../components/user/UserInfo';
 
 class UserSmoothies extends Component {
   constructor() {
@@ -23,22 +24,12 @@ class UserSmoothies extends Component {
     if (prevProps.match.params.id !== this.props.match.params.id)
       this.props.getUser(this.props.match.params.id);
   }
-  renderUserInfo() {
-    const { currentUser } = this.props;
-    return (
-      <div>
-        <p>
-          {currentUser.firstname} {currentUser.lastname}
-        </p>
-      </div>
-    );
-  }
   render() {
     return (
       <div>
         <div className="row">
           <div className="col-3">
-            {this.renderUserInfo()}
+            <UserInfo user={this.props.currentUser} />
           </div>
           <div className="col-9">
             <SmoothieList
