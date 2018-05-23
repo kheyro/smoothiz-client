@@ -17,7 +17,7 @@ class StateLoader {
 
   saveState(state) {
     try {
-      const serializedState = JSON.stringify(state);
+      const serializedState = JSON.stringify({ auth: state.auth });
       localStorage.setItem('auth', serializedState);
     } catch (err) {
       console.log(err);
