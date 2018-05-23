@@ -51,7 +51,7 @@ class SmoothieShow extends Component {
                     <button onClick={this.dislike}>dislike</button> ||
                     <button onClick={this.like}>Like</button>
                   }
-                  <p>like: {this.props.smoothie.likeUsers.length}</p>
+                  <p>like: {this.props.smoothie && this.props.smoothie.likeUsers && this.props.smoothie.likeUsers.length || 0}</p>
                 </div>
                 <div className="modal-footer">Footer</div>
               </div>
