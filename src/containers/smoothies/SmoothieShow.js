@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { getSmoothie, likeSmoothie, dislikeSmoothie } from '../../actions/smoothie';
+import { getUser } from '../../actions/user';
 
 class SmoothieShow extends Component {
   componentDidMount() {
@@ -13,11 +14,15 @@ class SmoothieShow extends Component {
   };
   like = e => {
     e.preventDefault();
-    this.props.likeSmoothie(this.props.match.params.id);
+    this.props.likeSmoothie(this.props.match.params.id).then(() =>
+      this.props.getUser(this.props.currentUser.id)
+    );
   };
   dislike = e => {
     e.preventDefault();
-    this.props.dislikeSmoothie(this.props.match.params.id);
+    this.props.dislikeSmoothie(this.props.match.params.id).then(() =>
+      this.props.getUser(this.props.currentUser.id)
+    );
   };
   render() {
     return (
@@ -71,6 +76,7 @@ const mapStateToProps = state => {
       user => user.user_id === state.currentUser.id
     );
   return {
+    currentUser: state.currentUser,
     smoothie: state.smoothies.currentSmoothie,
     liked,
   };
@@ -80,4 +86,5 @@ export default connect(mapStateToProps, {
   getSmoothie,
   likeSmoothie,
   dislikeSmoothie,
+  getUser,
 })(SmoothieShow);
