@@ -13,14 +13,20 @@ export function createSmoothie(data) {
       .catch(err => console.log(err));
 }
 
-export function getSmoothies() {
+export function getSmoothies(filter) {
+  let url;
+  if (filter && filter.type === 'category') {
+    url = `/categories/${filter.id}/smoothies`;
+  } else {
+    url = '/smoothies';
+  }
   return dispatch =>
     axios
-      .get(`${API_SERVER}/smoothies`)
+      .get(`${API_SERVER}${url}`)
       .then(res =>
         dispatch({
           type: actionTypes.GET_SMOOTHIES,
-          payload: res.data.smoothies
+          payload: res.data.smoothies,
         })
       )
       .catch(err => console.log(err));
