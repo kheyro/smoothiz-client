@@ -15,13 +15,13 @@ class SmoothieShow extends Component {
   like = e => {
     e.preventDefault();
     this.props.likeSmoothie(this.props.match.params.id).then(() =>
-      this.props.getUser(this.props.currentUser.id)
+      this.props.getUser(this.props.auth.user.id)
     );
   };
   dislike = e => {
     e.preventDefault();
     this.props.dislikeSmoothie(this.props.match.params.id).then(() =>
-      this.props.getUser(this.props.currentUser.id)
+      this.props.getUser(this.props.auth.user.id)
     );
   };
   render() {
@@ -71,9 +71,10 @@ class SmoothieShow extends Component {
 
 const mapStateToProps = state => {
   const liked =
+    state.auth.authenticated &&
     state.smoothies.currentSmoothie &&
     state.smoothies.currentSmoothie.likeUsers.some(
-      user => user.user_id === state.currentUser.id
+      user => user.user_id === state.auth.user.id
     );
   return {
     currentUser: state.currentUser,
