@@ -45,9 +45,15 @@ export function signoutUser() {
 }
 
 export function signupUser(userInfo) {
+  const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+  const formData = new FormData();
+  const user = Object.assign({}, userInfo, { picture: '' });
+  formData.append('picture', userInfo.picture);
+  formData.append('user', JSON.stringify(user));
+
   return dispatch => {
     axios
-      .post(`${API_SERVER}/signup`, userInfo)
+      .post(`${API_SERVER}/signup`, formData, config)
       .then(response => {
         dispatch({ type: actionTypes.AUTH_USER, payload: response.data.user });
         // localStorage.setItem('user', JSON.stringify(response.data.user));
