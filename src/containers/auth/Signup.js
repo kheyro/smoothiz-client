@@ -15,6 +15,7 @@ class Signup extends Component {
       firstname: '',
       lastname: '',
       email: '',
+      picture: {},
       birthday: moment(),
       password: '',
       passwordConfirm: '',
@@ -30,27 +31,29 @@ class Signup extends Component {
     const form = validation.validate(modState);
     this.setState({ form });
     if (form.isValid) {
-      const { firstname, lastname, email, password } = this.state;
+      const { firstname, lastname, email, password, picture } = this.state;
       this.props.signupUser({
         firstname,
         lastname,
         birthday: this.state.birthday.format('YYYY-MM-DD'),
         email,
         password,
+        picture,
       });
     }
   };
 
   handleChange = e => {
+    e.preventDefault();
+    const { state } = this;
     if (Object.prototype.hasOwnProperty.call(e, '_isAMomentObject')) {
-      this.setState({
-        birthday: e,
-      });
+      state.birthday = e;
+    } else if (e.target.name === 'picture') {
+      [state.picture] = e.target.files;
     } else {
-      this.setState({
-        [e.target.name]: e.target.value,
-      });
+      state[e.target.name] = e.target.value;
     }
+    this.setState(state);
   };
 
   renderAlert() {
@@ -92,6 +95,17 @@ class Signup extends Component {
               value={this.state.lastname}
             />
             <FVDisplayError field={this.state.form.lastname} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="picture">Picture</label>
+            <input
+              className="form-control"
+              id="picture"
+              name="picture"
+              onChange={this.handleChange}
+              type="file"
+            />
+            <FVDisplayError field={this.state.form.passwordConfirm} />
           </div>
           <div className="form-group">
             <label htmlFor="birthday">Birthday</label>
