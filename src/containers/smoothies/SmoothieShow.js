@@ -77,7 +77,7 @@ const mapStateToProps = state => {
       user => user.user_id === state.auth.user.id
     );
   return {
-    currentUser: state.currentUser,
+    auth: state.auth,
     smoothie: state.smoothies.currentSmoothie,
     liked,
   };
