@@ -23,7 +23,22 @@ class SmoothieList extends Component {
     const smoothie = this.props.currentUser.smoothies.find(
       smt => smt.id === smoothieId
     );
-    const { id, name, description, recipe, visibility, categories } = smoothie;
+    const {
+      id,
+      name,
+      description,
+      recipe,
+      visibility,
+      categories,
+      quantities,
+    } = smoothie;
+    // convert name_id to nameId
+    for (let i = 0; i < categories.length; i += 1) {
+      quantities[i].ingredientId = quantities[i].ingredient_id;
+      quantities[i].unitId = quantities[i].unit_id;
+      delete quantities[i].ingredient_id;
+      delete quantities[i].unit_id;
+    }
     const categoryIds = categories.map(category => category.id);
     this.setState({
       editData: {
@@ -33,6 +48,7 @@ class SmoothieList extends Component {
         visibility,
         categoryIds,
         editingId: id,
+        quantities,
       },
     });
     this.toggle();
