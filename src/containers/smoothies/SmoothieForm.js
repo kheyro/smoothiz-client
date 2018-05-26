@@ -4,6 +4,8 @@ import { withRouter } from 'react-router';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { FormValidator, FVDisplayError } from '../../../helpers/formValidator';
 import { getCategories } from '../../actions/category';
+import { getIngredients } from '../../actions/ingredient';
+import { getUnits } from '../../actions/unit';
 import { createSmoothie, editSmoothie } from '../../actions/smoothie';
 import { getUser } from '../../actions/user';
 
@@ -16,6 +18,13 @@ class SmoothieForm extends Component {
       visibility: 0,
       recipe: '',
       categoryIds: [0],
+      ingredients: [
+        {
+          ingredientId: 1,
+          quantity: 0,
+          unitId: 1,
+        },
+      ],
       form: {},
       modal: false,
       editingId: 0,
@@ -24,6 +33,8 @@ class SmoothieForm extends Component {
   }
   componentDidMount() {
     this.props.getCategories();
+    this.props.getUnits();
+    this.props.getIngredients();
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.editData && nextProps.editData.editingId > 0) {
@@ -34,8 +45,69 @@ class SmoothieForm extends Component {
         recipe: nextProps.editData.recipe,
         categoryIds: nextProps.editData.categoryIds,
         editingId: nextProps.editData.editingId,
+        ingredients: nextProps.editData.quantities,
       });
     }
+  }
+  handleIngredientChange = (e, i, name) => {
+    const ingredients = [...this.state.ingredients];
+    ingredients[i][name] = e.target.value;
+    this.setState({ ingredients });
+  };
+  renderIngredients() {
+    console.log(this.state)
+    return this.state.ingredients.map((ingredient, i) => (
+      <div className="form-row">
+        <div className="form-group col-4">
+          <label htmlFor={`ingredient_ids_${i}`}>Ingredients</label>
+          <select
+            name={`ingredient_ids_${i}`}
+            className="form-control"
+            onChange={e => this.handleIngredientChange(e, i, 'ingredientId')}
+            value={ingredient.ingredient_id}
+          >
+            {this.props.ingredients.map(ingredient => (
+              <option key={ingredient.id} value={ingredient.id}>
+                {ingredient.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="form-group col-2">
+          <label htmlFor={`quantity_${i}`}>Qty</label>
+          <input
+            className="form-control"
+            type="text"
+            value={ingredient.quantity}
+            name={`quantity_${i}`}
+            onChange={e => this.handleIngredientChange(e, i, 'quantity')}
+          />
+        </div>
+        <div className="form-group col-2">
+          <label htmlFor={`unit_ids_${i}`}>Units</label>
+          <select
+            name={`unit_ids_${i}`}
+            className="form-control"
+            value={ingredient.unit_id}
+            onChange={e => this.handleIngredientChange(e, i, 'unitId')}
+          >
+            {this.props.units.map(unit => (
+              <option key={unit.id} value={unit.id}>
+                {unit.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        {this.state.ingredients.length > 1 && (
+          <button
+            className="btn btn-danger"
+            onClick={e => this.removeIngredientField(e, i)}
+          >
+            -
+          </button>
+        )}
+      </div>
+    ));
   }
   renderCategory() {
     const { categories } = this.props;
@@ -84,6 +156,14 @@ class SmoothieForm extends Component {
       this.setState({ categoryIds });
     }
   };
+  removeIngredientField = (e, i) => {
+    e.preventDefault();
+    if (this.state.ingredients.length > 1) {
+      const { ingredients } = this.state;
+      ingredients.splice(i, 1);
+      this.setState({ ingredients });
+    }
+  };
   handleInputChange = e => {
     this.setState({
       [e.target.name]: e.target.value,
@@ -120,6 +200,19 @@ class SmoothieForm extends Component {
           });
         }
       }
+    });
+  };
+  addIngredientField = e => {
+    e.preventDefault();
+    this.setState({
+      ingredients: [
+        ...this.state.ingredients,
+        {
+          quantity: 0,
+          ingredientId: 1,
+          unitId: 1,
+        },
+      ],
     });
   };
   addCategoryField = e => {
@@ -205,6 +298,12 @@ class SmoothieForm extends Component {
                 <option value="1">Private</option>
               </select>
             </div>
+            <div className="form-group">
+              {this.renderIngredients()}
+            </div>
+            <button onClick={this.addIngredientField} className="btn btn-info">
+              Add Ingredient
+            </button>
           </form>
         </ModalBody>
         <ModalFooter>
@@ -245,11 +344,15 @@ const validation = new FormValidator([
 const mapStateToProps = state => ({
   categories: state.categories,
   auth: state.auth,
+  ingredients: state.ingredients,
+  units: state.units,
 });
 
 export default withRouter(
   connect(mapStateToProps, {
     getCategories,
+    getUnits,
+    getIngredients,
     createSmoothie,
     editSmoothie,
     getUser,
