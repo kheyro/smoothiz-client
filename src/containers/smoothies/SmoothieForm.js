@@ -17,6 +17,9 @@ class SmoothieForm extends Component {
       description: '',
       visibility: 0,
       recipe: '',
+      pictures: '',
+      preview: '',
+      previewError: '',
       categoryIds: [0],
       ingredients: [
         {
@@ -242,6 +245,50 @@ class SmoothieForm extends Component {
     this.resetForm();
     this.props.toggle('close');
   };
+  handlePictureChange = e => {
+    this.setState({
+      picture: '',
+      preview: '',
+      previewError: '',
+    });
+    const pictures = e.target.files[0];
+    // check file extension
+    const checkFile = /(jpe?g|png)$/;
+    if (
+      !checkFile.test(pictures.type) ||
+      !checkFile.test(pictures.name.split('.').pop())
+    ) {
+      return this.setState({
+        previewError: 'Invalid file! Allowed file types: .png, .jpg, .jpeg',
+      });
+    }
+    const reader = new FileReader();
+    reader.onloadend = () =>
+      this.setState({
+        pictures,
+        preview: reader.result,
+      });
+    reader.onerror = () =>
+      this.setState({
+        previewError: `${reader.error}. An error occurred, please try again...`,
+      });
+    return reader.readAsDataURL(pictures);
+  };
+  handlePictureClick = e => {
+    e.preventDefault();
+    document.getElementById('pictures').click();
+  };
+  renderPreviewError = () => {
+    return (
+      <div className="text-danger">
+        {this.state.previewError && (
+          <small>
+            <em>{this.state.previewError}</em>
+          </small>
+        )}
+      </div>
+    );
+  };
   render() {
     return (
       <Modal
@@ -272,6 +319,35 @@ class SmoothieForm extends Component {
                 type="text"
                 value={this.state.description}
               />
+            </div>
+            <div className="form-group">
+              <div className="preview w-100">
+                {this.state.preview && (
+                  <img
+                    alt="Smoothie preview"
+                    className="w-100"
+                    src={this.state.preview}
+                  />
+                )}
+              </div>
+              <label htmlFor="pictures" className="sr-only">
+                Pictures
+              </label>
+              <input
+                accept="image/*,.png,.jpg,.jpeg"
+                className="d-none"
+                id="pictures"
+                name="pictures"
+                onChange={this.handlePictureChange}
+                type="file"
+              />
+              {this.renderPreviewError()}
+              <button
+                className="btn btn-info"
+                onClick={this.handlePictureClick}
+              >
+                Add picture
+              </button>
             </div>
             <div className="form-group">
               <label htmlFor="recipe">Recipe</label>
