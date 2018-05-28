@@ -237,6 +237,13 @@ class SmoothieForm extends Component {
       categoryIds: [0],
       editPictures: '',
       pictures: {},
+      ingredients: [
+        {
+          ingredientId: 1,
+          quantity: 0,
+          unitId: 1,
+        },
+      ],
       error: { status: false, message: '' },
     });
   }
