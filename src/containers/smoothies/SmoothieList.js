@@ -31,6 +31,7 @@ class SmoothieList extends Component {
       visibility,
       categories,
       quantities,
+      pictures,
     } = smoothie;
     // convert name_id to nameId
     for (let i = 0; i < categories.length; i += 1) {
@@ -49,6 +50,7 @@ class SmoothieList extends Component {
         categoryIds,
         editingId: id,
         quantities,
+        editPictures: pictures,
       },
     });
     this.toggle();

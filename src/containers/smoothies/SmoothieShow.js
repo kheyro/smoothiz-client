@@ -50,6 +50,13 @@ class SmoothieShow extends Component {
                   </button>
                 </div>
                 <div className="modal-body">
+                  {this.props.smoothie &&
+                    this.props.smoothie.picture && (
+                      <img
+                        src={this.props.smoothie.picture}
+                        alt={this.props.smoothie.name}
+                      />
+                    )}
                   {this.props.smoothie && this.props.smoothie.description}
                   {
                     this.props.liked &&

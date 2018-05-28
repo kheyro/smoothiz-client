@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { FormValidator, FVDisplayError } from '../../../helpers/formValidator';
+import globals from '../../../config/globals';
 import { getCategories } from '../../actions/category';
 import { getIngredients } from '../../actions/ingredient';
 import { getUnits } from '../../actions/unit';
@@ -17,7 +18,8 @@ class SmoothieForm extends Component {
       description: '',
       visibility: 0,
       recipe: '',
-      pictures: '',
+      pictures: {},
+      editPictures: '',
       preview: '',
       previewError: '',
       categoryIds: [0],
@@ -49,6 +51,7 @@ class SmoothieForm extends Component {
         categoryIds: nextProps.editData.categoryIds,
         editingId: nextProps.editData.editingId,
         ingredients: nextProps.editData.quantities,
+        editPictures: nextProps.editData.editPictures,
       });
     }
   }
@@ -58,7 +61,6 @@ class SmoothieForm extends Component {
     this.setState({ ingredients });
   };
   renderIngredients() {
-    console.log(this.state)
     return this.state.ingredients.map((ingredient, i) => (
       <div className="form-row">
         <div className="form-group col-4">
@@ -233,6 +235,8 @@ class SmoothieForm extends Component {
       form: {},
       editingId: 0,
       categoryIds: [0],
+      editPictures: '',
+      pictures: {},
       error: { status: false, message: '' },
     });
   }
@@ -247,7 +251,7 @@ class SmoothieForm extends Component {
   };
   handlePictureChange = e => {
     this.setState({
-      picture: '',
+      pictures: '',
       preview: '',
       previewError: '',
     });
@@ -263,11 +267,12 @@ class SmoothieForm extends Component {
       });
     }
     const reader = new FileReader();
-    reader.onloadend = () =>
+    reader.onloadend = () => {
       this.setState({
         pictures,
         preview: reader.result,
       });
+    };
     reader.onerror = () =>
       this.setState({
         previewError: `${reader.error}. An error occurred, please try again...`,
@@ -287,6 +292,21 @@ class SmoothieForm extends Component {
           </small>
         )}
       </div>
+    );
+  };
+  renderPreviewPicture = () => {
+    let picture;
+    if (this.state.pictures instanceof File && this.state.preview) {
+      picture = this.state.preview;
+    } else if (this.state.editPictures && this.state.editingId > 0) {
+      picture = `${globals.API_SERVER}/smoothie/r/${this.state.editPictures}`;
+    }
+    return (
+      <Fragment>
+        {picture && (
+          <img alt="Smoothie preview" className="w-100" src={picture} />
+        )}
+      </Fragment>
     );
   };
   render() {
@@ -322,13 +342,7 @@ class SmoothieForm extends Component {
             </div>
             <div className="form-group">
               <div className="preview w-100">
-                {this.state.preview && (
-                  <img
-                    alt="Smoothie preview"
-                    className="w-100"
-                    src={this.state.preview}
-                  />
-                )}
+                {this.renderPreviewPicture()}
               </div>
               <label htmlFor="pictures" className="sr-only">
                 Pictures
