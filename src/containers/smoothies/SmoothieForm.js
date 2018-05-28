@@ -69,7 +69,7 @@ class SmoothieForm extends Component {
             name={`ingredient_ids_${i}`}
             className="form-control"
             onChange={e => this.handleIngredientChange(e, i, 'ingredientId')}
-            value={ingredient.ingredient_id}
+            value={ingredient.ingredientId}
           >
             {this.props.ingredients.map(ingredient => (
               <option key={ingredient.id} value={ingredient.id}>
@@ -93,7 +93,7 @@ class SmoothieForm extends Component {
           <select
             name={`unit_ids_${i}`}
             className="form-control"
-            value={ingredient.unit_id}
+            value={ingredient.unitId}
             onChange={e => this.handleIngredientChange(e, i, 'unitId')}
           >
             {this.props.units.map(unit => (
