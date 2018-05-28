@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import PropTypes from 'prop-types';
 import { FormValidator, FVDisplayError } from '../../../helpers/formValidator';
 import globals from '../../../config/globals';
 import { getCategories } from '../../actions/category';
@@ -9,6 +10,18 @@ import { getIngredients } from '../../actions/ingredient';
 import { getUnits } from '../../actions/unit';
 import { createSmoothie, editSmoothie } from '../../actions/smoothie';
 import { getUser } from '../../actions/user';
+
+const validation = new FormValidator([
+  {
+    fieldName: 'categoryIds',
+    friendlyName: 'Category',
+    rules: ['isSelected'],
+  },
+  {
+    fieldName: 'name',
+    rules: ['isRequired'],
+  },
+]);
 
 class SmoothieForm extends Component {
   constructor() {
@@ -36,11 +49,13 @@ class SmoothieForm extends Component {
       error: { status: false, message: '' },
     };
   }
+
   componentDidMount() {
     this.props.getCategories();
     this.props.getUnits();
     this.props.getIngredients();
   }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.editData && nextProps.editData.editingId > 0) {
       this.setState({
@@ -55,14 +70,206 @@ class SmoothieForm extends Component {
       });
     }
   }
+
+  setError(status, message) {
+    return this.setState({
+      error: { status, message },
+    });
+  }
+
+  resetForm() {
+    document.forms['add-smoothie'].reset();
+    this.setState({
+      name: '',
+      description: '',
+      recipe: '',
+      form: {},
+      editingId: 0,
+      categoryIds: [0],
+      editPictures: '',
+      pictures: {},
+      ingredients: [
+        {
+          ingredientId: 1,
+          quantity: 0,
+          unitId: 1,
+        },
+      ],
+      error: { status: false, message: '' },
+    });
+  }
+
+  addIngredientField = e => {
+    e.preventDefault();
+    this.setState({
+      ingredients: [
+        ...this.state.ingredients,
+        {
+          quantity: 0,
+          ingredientId: 1,
+          unitId: 1,
+        },
+      ],
+    });
+  };
+
+  addCategoryField = e => {
+    e.preventDefault();
+    this.setState({
+      categoryIds: [...this.state.categoryIds, 0],
+    });
+  };
+
+  handleFormSubmit = e => {
+    e.preventDefault();
+    const form = validation.validate(this.state);
+    this.setState({ form }, () => {
+      if (this.state.form.isValid) {
+        if (this.state.editingId > 0) {
+          this.props.editSmoothie(this.state).then(res => {
+            if (res.status === 200) {
+              // call action to refresh store
+              this.props.getUser(this.props.auth.user.id);
+              return this.setError(false, 'Changes successfully saved');
+            }
+            return this.setError(true, 'An error appeared while saving');
+          });
+        } else {
+          this.props.createSmoothie(this.state).then(res => {
+            if (res.status === 201) {
+              this.resetForm();
+              // call action to refresh store
+              this.props.getUser(this.props.auth.user.id);
+              return this.setError(false, 'Smoothie successfully added');
+            }
+            return this.setError(true, 'An error appeared while saving');
+          });
+        }
+      }
+    });
+  };
+
+  handleCatChange = (e, i) => {
+    const categoryIds = [...this.state.categoryIds];
+    categoryIds[i] = e.target.value;
+    this.setState({ categoryIds });
+  };
+
+  handleInputChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  removeIngredientField = (e, i) => {
+    e.preventDefault();
+    if (this.state.ingredients.length > 1) {
+      const { ingredients } = this.state;
+      ingredients.splice(i, 1);
+      this.setState({ ingredients });
+    }
+  };
+
+  removeCategoryField = (e, i) => {
+    e.preventDefault();
+    if (this.state.categoryIds.length > 1) {
+      const { categoryIds } = this.state;
+      categoryIds.splice(i, 1);
+      this.setState({ categoryIds });
+    }
+  };
+
   handleIngredientChange = (e, i, name) => {
     const ingredients = [...this.state.ingredients];
     ingredients[i][name] = e.target.value;
     this.setState({ ingredients });
   };
+
+  toggle = () => {
+    this.resetForm();
+    this.props.toggle('close');
+  };
+
+  handlePictureChange = e => {
+    this.setState({
+      pictures: '',
+      preview: '',
+      previewError: '',
+    });
+    const pictures = e.target.files[0];
+    // check file extension
+    const checkFile = /(jpe?g|png)$/;
+    if (
+      !checkFile.test(pictures.type) ||
+      !checkFile.test(pictures.name.split('.').pop())
+    ) {
+      return this.setState({
+        previewError: 'Invalid file! Allowed file types: .png, .jpg, .jpeg',
+      });
+    }
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      this.setState({
+        pictures,
+        preview: reader.result,
+      });
+    };
+    reader.onerror = () =>
+      this.setState({
+        previewError: `${reader.error}. An error occurred, please try again...`,
+      });
+    return reader.readAsDataURL(pictures);
+  };
+
+  handlePictureClick = e => {
+    e.preventDefault();
+    document.getElementById('pictures').click();
+  };
+
+  renderCategoryIds() {
+    return this.state.categoryIds.map((category, i) => (
+      <div className="form-group" key={category}>
+        <label htmlFor={`category_ids_${i}`} className="sr-only">
+          Category
+        </label>
+        <select
+          className="form-control"
+          id={`category_ids_${i}`}
+          name="category_ids"
+          onChange={e => this.handleCatChange(e, i)}
+          value={category}
+        >
+          <option value="0">Select Category</option>
+          {this.renderCategory()}
+        </select>
+        {this.state.categoryIds.length > 1 && (
+          <button
+            className="btn btn-danger"
+            onClick={e => this.removeCategoryField(e, i)}
+          >
+            -
+          </button>
+        )}
+        <FVDisplayError field={this.state.form.categoryIds} index={i} />
+      </div>
+    ));
+  }
+
+  renderCategory() {
+    const { categories } = this.props;
+    if (Object.keys(categories).length > 0) {
+      return categories.map(category => (
+        <option value={category.id} key={category.id}>
+          {category.name}
+        </option>
+      ));
+    }
+    return '';
+  }
+
   renderIngredients() {
     return this.state.ingredients.map((ingredient, i) => (
-      <div className="form-row">
+      <div className="form-row" key={ingredient.ingredientId}>
         <div className="form-group col-4">
           <label htmlFor={`ingredient_ids_${i}`}>Ingredients</label>
           <select
@@ -71,9 +278,9 @@ class SmoothieForm extends Component {
             onChange={e => this.handleIngredientChange(e, i, 'ingredientId')}
             value={ingredient.ingredientId}
           >
-            {this.props.ingredients.map(ingredient => (
-              <option key={ingredient.id} value={ingredient.id}>
-                {ingredient.name}
+            {this.props.ingredients.map(ing => (
+              <option key={ing.id} value={ing.id}>
+                {ing.name}
               </option>
             ))}
           </select>
@@ -114,193 +321,17 @@ class SmoothieForm extends Component {
       </div>
     ));
   }
-  renderCategory() {
-    const { categories } = this.props;
-    if (Object.keys(categories).length > 0) {
-      return categories.map(category => (
-        <option value={category.id} key={category.id}>
-          {category.name}
-        </option>
-      ));
-    }
-    return '';
-  }
-  renderCategoryIds() {
-    return this.state.categoryIds.map((category, i) => (
-      <div className="form-group">
-        <label htmlFor={`category_ids_${i}`} className="sr-only">
-          Category
-        </label>
-        <select
-          className="form-control"
-          id={`category_ids_${i}`}
-          name="category_ids"
-          onChange={e => this.handleCatChange(e, i)}
-          value={category}
-        >
-          <option value="0">Select Category</option>
-          {this.renderCategory()}
-        </select>
-        {this.state.categoryIds.length > 1 && (
-          <button
-            className="btn btn-danger"
-            onClick={e => this.removeCategoryField(e, i)}
-          >
-            -
-          </button>
-        )}
-        <FVDisplayError field={this.state.form.categoryIds} index={i} />
-      </div>
-    ));
-  }
-  removeCategoryField = (e, i) => {
-    e.preventDefault();
-    if (this.state.categoryIds.length > 1) {
-      const { categoryIds } = this.state;
-      categoryIds.splice(i, 1);
-      this.setState({ categoryIds });
-    }
-  };
-  removeIngredientField = (e, i) => {
-    e.preventDefault();
-    if (this.state.ingredients.length > 1) {
-      const { ingredients } = this.state;
-      ingredients.splice(i, 1);
-      this.setState({ ingredients });
-    }
-  };
-  handleInputChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
-  };
-  handleCatChange = (e, i) => {
-    const categoryIds = [...this.state.categoryIds];
-    categoryIds[i] = e.target.value;
-    this.setState({ categoryIds });
-  };
-  handleFormSubmit = e => {
-    e.preventDefault();
-    const form = validation.validate(this.state);
-    this.setState({ form }, () => {
-      if (this.state.form.isValid) {
-        if (this.state.editingId > 0) {
-          this.props.editSmoothie(this.state).then(res => {
-            if (res.status === 200) {
-              // call action to refresh store
-              this.props.getUser(this.props.auth.user.id);
-              return this.setError(false, 'Changes successfully saved');
-            }
-            return this.setError(true, 'An error appeared while saving');
-          });
-        } else {
-          this.props.createSmoothie(this.state).then(res => {
-            if (res.status === 201) {
-              this.resetForm();
-              // call action to refresh store
-              this.props.getUser(this.props.auth.user.id);
-              return this.setError(false, 'Smoothie successfully added');
-            }
-            return this.setError(true, 'An error appeared while saving');
-          });
-        }
-      }
-    });
-  };
-  addIngredientField = e => {
-    e.preventDefault();
-    this.setState({
-      ingredients: [
-        ...this.state.ingredients,
-        {
-          quantity: 0,
-          ingredientId: 1,
-          unitId: 1,
-        },
-      ],
-    });
-  };
-  addCategoryField = e => {
-    e.preventDefault();
-    this.setState({
-      categoryIds: [...this.state.categoryIds, 0],
-    });
-  };
-  resetForm() {
-    document.forms['add-smoothie'].reset();
-    this.setState({
-      name: '',
-      description: '',
-      recipe: '',
-      form: {},
-      editingId: 0,
-      categoryIds: [0],
-      editPictures: '',
-      pictures: {},
-      ingredients: [
-        {
-          ingredientId: 1,
-          quantity: 0,
-          unitId: 1,
-        },
-      ],
-      error: { status: false, message: '' },
-    });
-  }
-  setError(status, message) {
-    return this.setState({
-      error: { status, message },
-    });
-  }
-  toggle = () => {
-    this.resetForm();
-    this.props.toggle('close');
-  };
-  handlePictureChange = e => {
-    this.setState({
-      pictures: '',
-      preview: '',
-      previewError: '',
-    });
-    const pictures = e.target.files[0];
-    // check file extension
-    const checkFile = /(jpe?g|png)$/;
-    if (
-      !checkFile.test(pictures.type) ||
-      !checkFile.test(pictures.name.split('.').pop())
-    ) {
-      return this.setState({
-        previewError: 'Invalid file! Allowed file types: .png, .jpg, .jpeg',
-      });
-    }
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      this.setState({
-        pictures,
-        preview: reader.result,
-      });
-    };
-    reader.onerror = () =>
-      this.setState({
-        previewError: `${reader.error}. An error occurred, please try again...`,
-      });
-    return reader.readAsDataURL(pictures);
-  };
-  handlePictureClick = e => {
-    e.preventDefault();
-    document.getElementById('pictures').click();
-  };
-  renderPreviewError = () => {
-    return (
-      <div className="text-danger">
-        {this.state.previewError && (
-          <small>
-            <em>{this.state.previewError}</em>
-          </small>
-        )}
-      </div>
-    );
-  };
+
+  renderPreviewError = () => (
+    <div className="text-danger">
+      {this.state.previewError && (
+        <small>
+          <em>{this.state.previewError}</em>
+        </small>
+      )}
+    </div>
+  );
+
   renderPreviewPicture = () => {
     let picture;
     if (this.state.pictures instanceof File && this.state.preview) {
@@ -316,6 +347,7 @@ class SmoothieForm extends Component {
       </Fragment>
     );
   };
+
   render() {
     return (
       <Modal
@@ -348,9 +380,7 @@ class SmoothieForm extends Component {
               />
             </div>
             <div className="form-group">
-              <div className="preview w-100">
-                {this.renderPreviewPicture()}
-              </div>
+              <div className="preview w-100">{this.renderPreviewPicture()}</div>
               <label htmlFor="pictures" className="sr-only">
                 Pictures
               </label>
@@ -395,9 +425,7 @@ class SmoothieForm extends Component {
                 <option value="1">Private</option>
               </select>
             </div>
-            <div className="form-group">
-              {this.renderIngredients()}
-            </div>
+            <div className="form-group">{this.renderIngredients()}</div>
             <button onClick={this.addIngredientField} className="btn btn-info">
               Add Ingredient
             </button>
@@ -411,11 +439,15 @@ class SmoothieForm extends Component {
                   <small>{this.state.error.message}</small>
                 </div>
               )}
-            {!this.state.error.status && this.state.error.message !== '' && <div className="text-success"><small>{this.state.error.message}</small></div>}
+            {!this.state.error.status &&
+              this.state.error.message !== '' && (
+                <div className="text-success">
+                  <small>{this.state.error.message}</small>
+                </div>
+              )}
           </div>
           <Button color="primary" onClick={this.handleFormSubmit}>
-            {(this.state.editingId > 0 && 'Edit Smoothie') ||
-            'Add Smoothie'}
+            {(this.state.editingId > 0 && 'Edit Smoothie') || 'Add Smoothie'}
           </Button>{' '}
           <Button color="secondary" onClick={this.toggle}>
             Cancel
@@ -426,24 +458,81 @@ class SmoothieForm extends Component {
   }
 }
 
-const validation = new FormValidator([
-  {
-    fieldName: 'categoryIds',
-    friendlyName: 'Category',
-    rules: ['isSelected'],
-  },
-  {
-    fieldName: 'name',
-    rules: ['isRequired'],
-  },
-]);
-
 const mapStateToProps = state => ({
   categories: state.categories,
   auth: state.auth,
   ingredients: state.ingredients,
   units: state.units,
 });
+
+SmoothieForm.propTypes = {
+  getCategories: PropTypes.func,
+  getUnits: PropTypes.func,
+  getUser: PropTypes.func,
+  getIngredients: PropTypes.func,
+  createSmoothie: PropTypes.func,
+  editSmoothie: PropTypes.func,
+  toggle: PropTypes.func,
+  editData: PropTypes.shape({
+    name: PropTypes.string,
+    description: PropTypes.string,
+    visibility: PropTypes.number,
+    editingId: PropTypes.number,
+    recipe: PropTypes.string,
+    categoryIds: PropTypes.arrayOf(PropTypes.number),
+    editPictures: PropTypes.string,
+    quantities: PropTypes.arrayOf(
+      PropTypes.shape({
+        unitId: PropTypes.number,
+        quantity: PropTypes.number,
+        ingredientId: PropTypes.number,
+      })
+    ),
+  }),
+  ingredients: PropTypes.arrayOf(
+    PropTypes.shape({
+      unitId: PropTypes.number,
+      quantity: PropTypes.number,
+      ingredientId: PropTypes.number,
+    })
+  ),
+  units: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+    })
+  ),
+  categories: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+    })
+  ),
+  className: PropTypes.string,
+  modal: PropTypes.bool,
+  auth: PropTypes.shape({
+    user: PropTypes.shape({
+      id: PropTypes.number,
+    }),
+  }),
+};
+
+SmoothieForm.defaultProps = {
+  getCategories: () => {},
+  getUnits: () => {},
+  getUser: () => {},
+  getIngredients: () => {},
+  createSmoothie: () => {},
+  editSmoothie: () => {},
+  toggle: () => {},
+  editData: {},
+  ingredients: [],
+  units: [],
+  className: '',
+  modal: false,
+  categories: [],
+  auth: {},
+};
 
 export default withRouter(
   connect(mapStateToProps, {
