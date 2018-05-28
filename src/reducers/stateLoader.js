@@ -1,7 +1,5 @@
-import React from 'react';
-
 class StateLoader {
-  loadState() {
+  static loadState() {
     try {
       const serializedState = localStorage.getItem('auth');
       const token = localStorage.getItem('token');
@@ -15,7 +13,7 @@ class StateLoader {
     }
   }
 
-  saveState(state) {
+  static saveState(state) {
     try {
       const serializedState = JSON.stringify({ auth: state.auth });
       localStorage.setItem('auth', serializedState);

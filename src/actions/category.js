@@ -1,12 +1,11 @@
 import axios from 'axios';
 import actionTypes from './actionTypes';
-
-const API_SERVER = 'http://localhost:3000';
+import globals from '../../config/globals';
 
 export function getCategories() {
   return dispatch =>
     axios
-      .get(`${API_SERVER}/categories`)
+      .get(`${globals.API_SERVER}/categories`)
       .then(res =>
         dispatch({
           type: actionTypes.GET_CATEGORIES,

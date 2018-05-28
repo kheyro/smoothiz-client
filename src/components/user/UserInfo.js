@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import globals from '../../../config/globals';
 
 const UserInfo = ({ user }) => {
@@ -15,6 +17,18 @@ const UserInfo = ({ user }) => {
       </p>
     </div>
   );
+};
+
+UserInfo.propTypes = {
+  user: PropTypes.shape({
+    picture: PropTypes.string,
+    firstname: PropTypes.string,
+    lastname: PropTypes.string,
+  }),
+};
+
+UserInfo.defaultProps = {
+  user: {},
 };
 
 export default UserInfo;

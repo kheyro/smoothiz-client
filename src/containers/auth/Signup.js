@@ -2,11 +2,44 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import { signupUser } from '../../actions/authentication';
 import { FormValidator, FVDisplayError } from '../../../helpers/formValidator';
 
 import '../../../node_modules/react-datepicker/dist/react-datepicker.css';
 import globals from '../../../config/globals';
+
+const validation = new FormValidator([
+  {
+    fieldName: 'firstname',
+    friendlyName: 'first name',
+    rules: ['isAlpha'],
+  },
+  {
+    fieldName: 'lastname',
+    friendlyName: 'last name',
+    rules: ['isAlpha'],
+  },
+  {
+    fieldName: 'birthday',
+    friendlyName: 'birthday',
+    rules: ['isISO8601'],
+  },
+  {
+    fieldName: 'email',
+    friendlyName: 'email',
+    rules: ['isRequired', 'isEmail'],
+  },
+  {
+    fieldName: 'password',
+    rules: ['isRequired'],
+  },
+  {
+    fieldName: 'passwordConfirm',
+    friendlyName: 'password confirmation',
+    rules: ['isRequired', { equals: ['password'] }],
+  },
+]);
 
 class Signup extends Component {
   constructor() {
@@ -156,7 +189,9 @@ class Signup extends Component {
             <FVDisplayError field={this.state.form.passwordConfirm} />
           </div>
           {this.renderAlert()}
-          <button type="submit" className="btn btn-primary mr-2">Sign up</button>
+          <button type="submit" className="btn btn-primary mr-2">
+            Sign up
+          </button>
           <a
             className="btn btn-info"
             href={`${globals.API_SERVER}/auth/facebook`}
@@ -169,40 +204,18 @@ class Signup extends Component {
   }
 }
 
+Signup.propTypes = {
+  signupUser: PropTypes.func,
+  errorMessage: PropTypes.string,
+};
+
+Signup.defaultProps = {
+  signupUser: () => {},
+  errorMessage: '',
+};
+
 const mapStateToProps = state => ({
   errorMessage: state.auth.error,
 });
-
-const validation = new FormValidator([
-  {
-    fieldName: 'firstname',
-    friendlyName: 'first name',
-    rules: ['isAlpha'],
-  },
-  {
-    fieldName: 'lastname',
-    friendlyName: 'last name',
-    rules: ['isAlpha'],
-  },
-  {
-    fieldName: 'birthday',
-    friendlyName: 'birthday',
-    rules: ['isISO8601'],
-  },
-  {
-    fieldName: 'email',
-    friendlyName: 'email',
-    rules: ['isRequired', 'isEmail'],
-  },
-  {
-    fieldName: 'password',
-    rules: ['isRequired'],
-  },
-  {
-    fieldName: 'passwordConfirm',
-    friendlyName: 'password confirmation',
-    rules: ['isRequired', { equals: ['password'] }],
-  },
-]);
 
 export default connect(mapStateToProps, { signupUser })(Signup);

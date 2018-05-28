@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router';
+import PropTypes from 'prop-types';
 
 import Header from './containers/Header';
 import Home from './containers/Home';
@@ -11,7 +12,6 @@ import CategoryPage from './containers/CategoryPage';
 import UserSmoothies from './containers/user/UserPage';
 import SmoothieShow from './containers/smoothies/SmoothieShow';
 import RequireAuth from './containers/auth/RequireAuthentication';
-import FormValidator from './components/FormValidator';
 
 import './styles/styles.scss';
 
@@ -19,9 +19,10 @@ class App extends Component {
   componentWillUpdate(nextProps) {
     const { location } = this.props;
     if (nextProps.history.action !== 'POP') {
-      this.previousLocation = this.props.location;
+      this.previousLocation = location;
     }
   }
+
   previousLocation = this.props.location;
 
   render() {
@@ -39,7 +40,6 @@ class App extends Component {
             <Route path="/features" component={RequireAuth(Features)} />
             <Route path="/users/:id" component={UserSmoothies} />
             <Route path="/categories/:id" component={CategoryPage} />
-            <Route path="/formvalidator" component={FormValidator} />
           </Switch>
           <Route path="/smoothies/:id" component={SmoothieShow} />
         </div>
@@ -47,5 +47,13 @@ class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+  location: PropTypes.objectOf(PropTypes.string),
+};
+
+App.defaultProps = {
+  location: '/',
+};
 
 export default App;

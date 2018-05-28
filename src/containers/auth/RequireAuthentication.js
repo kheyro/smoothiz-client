@@ -7,6 +7,7 @@ export default function(ComposedComponent) {
     static contextTypes = {
       router: PropTypes.object,
     };
+
     componentWillMount() {
       this.checkAuth(this.props.authenticated);
     }
@@ -23,6 +24,15 @@ export default function(ComposedComponent) {
       return <ComposedComponent {...this.props} />;
     }
   }
+
+  Authentication.propTypes = {
+    authenticated: PropTypes.bool,
+  };
+
+  Authentication.defaultProps = {
+    authenticated: false,
+  };
+
   const mapStateToProps = state => ({
     authenticated: state.auth.authenticated,
   });

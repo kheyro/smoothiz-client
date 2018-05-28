@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const UserLinks = ({ userId }) => (
   <div>
@@ -15,5 +16,13 @@ const UserLinks = ({ userId }) => (
     </ul>
   </div>
 );
+
+UserLinks.propTypes = {
+  userId: PropTypes.number,
+};
+
+UserLinks.defaultProps = {
+  userId: '',
+};
 
 export default UserLinks;

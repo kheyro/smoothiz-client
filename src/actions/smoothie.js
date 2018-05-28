@@ -14,7 +14,7 @@ export function createSmoothie(data) {
   const smoothie = Object.assign({}, data, { pictures: {}, preview: '' });
   formData.append('pictures', data.pictures);
   formData.append('smoothie', JSON.stringify(smoothie));
-  return dispatch =>
+  return () =>
     axios
       .post(`${API_SERVER}/smoothies`, formData, config)
       .then(res => res)
@@ -61,7 +61,7 @@ export function editSmoothie(data) {
   const smoothie = Object.assign({}, data, { pictures: {}, preview: '' });
   formData.append('pictures', data.pictures);
   formData.append('smoothie', JSON.stringify(smoothie));
-  return dispatch =>
+  return () =>
     axios
       .patch(`${API_SERVER}/smoothies/${data.editingId}`, formData, config)
       .then(res => res)
@@ -69,7 +69,7 @@ export function editSmoothie(data) {
 }
 
 export function deleteSmoothie(smoothieId) {
-  return dispatch =>
+  return () =>
     axios
       .delete(`${API_SERVER}/smoothies/${smoothieId}`, {
         headers: { authorization: localStorage.getItem('token') },
@@ -79,7 +79,7 @@ export function deleteSmoothie(smoothieId) {
 }
 
 export function likeSmoothie(smoothieId) {
-  return dispatch =>
+  return () =>
     axios
       .get(`${API_SERVER}/smoothies/${smoothieId}/like`, {
         headers: { authorization: localStorage.getItem('token') },
@@ -89,7 +89,7 @@ export function likeSmoothie(smoothieId) {
 }
 
 export function dislikeSmoothie(smoothieId) {
-  return dispatch =>
+  return () =>
     axios
       .get(`${API_SERVER}/smoothies/${smoothieId}/dislike`, {
         headers: { authorization: localStorage.getItem('token') },
@@ -97,4 +97,3 @@ export function dislikeSmoothie(smoothieId) {
       .then(() => this.getSmoothie(smoothieId))
       .catch(err => console.log(err));
 }
-

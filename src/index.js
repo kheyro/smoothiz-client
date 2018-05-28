@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import { Router, Route } from 'react-router';
 import store from '../config/store';
 import history from '../config/history';
-import actionTypes from './actions/actionTypes';
 
 import App from './App';
 

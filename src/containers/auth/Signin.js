@@ -1,9 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import globals from '../../../config/globals';
 import { FormValidator, FVDisplayError } from '../../../helpers/formValidator';
 import { signinUser } from '../../actions/authentication';
+
+const validation = new FormValidator([
+  {
+    fieldName: 'email',
+    friendlyName: 'email',
+    rules: ['isRequired', 'isEmail'],
+  },
+  {
+    fieldName: 'password',
+    rules: ['isRequired'],
+  },
+]);
 
 class Signin extends Component {
   constructor() {
@@ -73,7 +86,9 @@ class Signin extends Component {
             <FVDisplayError field={this.state.form.password} />
           </div>
           {this.renderAlert()}
-          <button type="submit" className="btn btn-primary mr-2">Sign in</button>
+          <button type="submit" className="btn btn-primary mr-2">
+            Sign in
+          </button>
           <a
             className="btn btn-info"
             href={`${globals.API_SERVER}/auth/facebook`}
@@ -86,20 +101,18 @@ class Signin extends Component {
   }
 }
 
-const validation = new FormValidator([
-  {
-    fieldName: 'email',
-    friendlyName: 'email',
-    rules: ['isRequired', 'isEmail'],
-  },
-  {
-    fieldName: 'password',
-    rules: ['isRequired'],
-  },
-]);
-
 const mapStateToProps = state => ({
   errorMessage: state.auth.error,
 });
+
+Signin.propTypes = {
+  signinUser: PropTypes.func,
+  errorMessage: PropTypes.string,
+};
+
+Signin.defaultProps = {
+  signinUser: () => {},
+  errorMessage: '',
+};
 
 export default connect(mapStateToProps, { signinUser })(Signin);

@@ -8,7 +8,7 @@ validator.isSelected = value => value !== '0';
 function displayError(field) {
   return (
     <div className="fv-messages text-danger">
-      {field.messages.map((message, i) => (
+      {field.messages.map(message => (
         <div className="fv-message">{message}</div>
       ))}
     </div>
@@ -28,7 +28,9 @@ export class FormValidator {
     this.validations = validations;
     this.formIsValid = true;
   }
+
   capitalize = word => word[0].toUpperCase() + word.slice(1);
+
   checkRule(friendlyFieldName, state, field, fieldName, fieldValue) {
     const response = { isValid: true, messages: [] };
     field.rules.forEach(rule => {
@@ -82,12 +84,12 @@ export class FormValidator {
           errorMessage = `${friendlyFieldName} must be a number`;
           if (args.length > 0) {
             const keys = Object.keys(...args);
-            if (keys.includes('max', 'min')) {
+            if (keys.includes('max') && keys.includes('min')) {
               errorMessage += ` between ${args[0].min} and ${args[0].max}`;
             } else if (keys.includes('min')) {
               errorMessage += ` greater than ${args[0].min}`;
             } else if (keys.includes('max')) {
-              errorMessage += ` lower than ${args[0].mix}`;
+              errorMessage += ` lower than ${args[0].max}`;
             }
           }
           response.messages.push(errorMessage);
@@ -107,13 +109,14 @@ export class FormValidator {
     });
     return response;
   }
+
   validate(state) {
     this.formIsValid = true;
     const response = { isValid: this.formIsValid };
     this.validations.forEach(field => {
       const { fieldName } = field;
       const friendlyFieldName =
-        field.friendlyName && this.capitalize(field.friendlyName) ||
+        (field.friendlyName && this.capitalize(field.friendlyName)) ||
         this.capitalize(fieldName);
       // Initialize field properties
       if (state[fieldName] instanceof Array) {
@@ -121,11 +124,23 @@ export class FormValidator {
         response[fieldName] = [];
         state[fieldName].forEach(arrayEl => {
           const fieldValue = arrayEl.toString();
-          const thisField = this.checkRule(friendlyFieldName, state, field, fieldName, fieldValue);
+          const thisField = this.checkRule(
+            friendlyFieldName,
+            state,
+            field,
+            fieldName,
+            fieldValue
+          );
           response[fieldName].push(thisField);
         });
       } else {
-        response[fieldName] = this.checkRule(friendlyFieldName, state, field, fieldName, state[fieldName]);
+        response[fieldName] = this.checkRule(
+          friendlyFieldName,
+          state,
+          field,
+          fieldName,
+          state[fieldName]
+        );
       }
     });
     // console.log(response);

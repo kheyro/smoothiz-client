@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
 
 import { deleteSmoothie, editSmoothie } from '../../actions/smoothie';
@@ -15,10 +16,12 @@ class SmoothieList extends Component {
       modal: false,
     };
   }
+
   toggle = action => {
     if (action === 'close') this.setState({ editData: {} });
     this.setState({ modal: !this.state.modal });
   };
+
   editSmoothie(smoothieId) {
     const smoothie = this.props.currentUser.smoothies.find(
       smt => smt.id === smoothieId
@@ -55,11 +58,13 @@ class SmoothieList extends Component {
     });
     this.toggle();
   }
+
   deleteSmoothie(smoothieId) {
-    this.props.deleteSmoothie(smoothieId).then(() =>
-      this.props.getUser(this.props.auth.user.id)
-    );
+    this.props
+      .deleteSmoothie(smoothieId)
+      .then(() => this.props.getUser(this.props.auth.user.id));
   }
+
   render() {
     return (
       <div>
@@ -99,6 +104,70 @@ class SmoothieList extends Component {
     );
   }
 }
+
+SmoothieList.propTypes = {
+  deleteSmoothie: PropTypes.func,
+  getUser: PropTypes.func,
+  displayAction: PropTypes.bool,
+  auth: PropTypes.shape({
+    authenticated: PropTypes.bool,
+    user: PropTypes.shape({
+      id: PropTypes.number,
+    }),
+  }),
+  currentUser: PropTypes.shape({
+    id: PropTypes.number,
+    username: PropTypes.string,
+    firstname: PropTypes.string,
+    lastname: PropTypes.string,
+    picture: PropTypes.string,
+    smoothies: PropTypes.arrayOf(
+      PropTypes.shape({
+        description: PropTypes.string,
+        id: PropTypes.number,
+        name: PropTypes.string,
+        pictures: PropTypes.string,
+        recipe: PropTypes.string,
+        user_id: PropTypes.number,
+        views: PropTypes.number,
+        visibility: PropTypes.number,
+      })
+    ),
+    likeSmoothies: PropTypes.arrayOf(
+      PropTypes.shape({
+        description: PropTypes.string,
+        id: PropTypes.number,
+        name: PropTypes.string,
+        pictures: PropTypes.string,
+        recipe: PropTypes.string,
+        user_id: PropTypes.number,
+        views: PropTypes.number,
+        visibility: PropTypes.number,
+      })
+    ),
+  }),
+  smoothies: PropTypes.arrayOf(
+    PropTypes.shape({
+      description: PropTypes.string,
+      id: PropTypes.number,
+      name: PropTypes.string,
+      pictures: PropTypes.string,
+      recipe: PropTypes.string,
+      user_id: PropTypes.number,
+      views: PropTypes.number,
+      visibility: PropTypes.number,
+    })
+  ),
+};
+
+SmoothieList.defaultProps = {
+  deleteSmoothie: () => {},
+  getUser: () => {},
+  displayAction: false,
+  auth: {},
+  currentUser: {},
+  smoothies: [],
+};
 
 const mapStateToProps = state => ({
   currentUser: state.currentUser,

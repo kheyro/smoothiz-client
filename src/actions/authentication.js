@@ -1,7 +1,7 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import actionTypes from './actionTypes';
 import history from '../../config/history';
-import Cookies from 'js-cookie';
 
 const API_SERVER = 'http://localhost:3000';
 
@@ -65,11 +65,11 @@ export function signupUser(userInfo) {
 }
 
 export function fetchMessage() {
-  return dispatch => {
+  return () => {
     axios
       .get(`${API_SERVER}`, {
         headers: { authorization: localStorage.getItem('token') },
       })
       .then(response => console.log(response));
-  }
+  };
 }
