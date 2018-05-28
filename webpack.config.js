@@ -98,6 +98,7 @@ module.exports = {
     ],
   },
   devServer: {
+    clientLogLevel: 'error',
     historyApiFallback: true,
   },
   plugins,
