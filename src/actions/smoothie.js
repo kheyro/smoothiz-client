@@ -4,7 +4,6 @@ import actionTypes from './actionTypes';
 const API_SERVER = 'http://localhost:3000';
 
 export function createSmoothie(data) {
-  console.log('ACTION', data);
   const config = {
     headers: {
       'Content-Type': 'multipart/form-data',
@@ -52,11 +51,19 @@ export function getSmoothie(smoothieId) {
 }
 
 export function editSmoothie(data) {
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      authorization: localStorage.getItem('token'),
+    },
+  };
+  const formData = new FormData();
+  const smoothie = Object.assign({}, data, { pictures: {}, preview: '' });
+  formData.append('pictures', data.pictures);
+  formData.append('smoothie', JSON.stringify(smoothie));
   return dispatch =>
     axios
-      .patch(`${API_SERVER}/smoothies/${data.editingId}`, data, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+      .patch(`${API_SERVER}/smoothies/${data.editingId}`, formData, config)
       .then(res => res)
       .catch(err => console.log(err));
 }
