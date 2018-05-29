@@ -11,6 +11,7 @@
     "prettier/prettier": "error",
     "import/prefer-default-export": [1],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/require-default-props": [1],
     "jsx-a11y/anchor-is-valid": [
       2,
       {
