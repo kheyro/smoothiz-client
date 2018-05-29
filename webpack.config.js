@@ -5,6 +5,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const webpack = require('webpack');
 const EslintFormatterPretty = require('eslint-formatter-pretty');
 
@@ -13,6 +14,21 @@ const ASSET_PATH = process.env.ASSET_PATH || './build/';
 const plugins = [
   new FriendlyErrorsWebpackPlugin(),
   new ExtractTextPlugin('styles.css'),
+  new FaviconsWebpackPlugin({
+    logo: './public/favicon.png',
+    icons: {
+      android: true,
+      appleIcon: true,
+      appleStartup: true,
+      coast: false,
+      favicons: true,
+      firefox: true,
+      opengraph: false,
+      twitter: false,
+      yandex: false,
+      windows: false,
+    },
+  }),
   new webpack.LoaderOptionsPlugin({
     options: {
       eslint: {
