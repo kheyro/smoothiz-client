@@ -16,11 +16,9 @@ class CategoryPage extends Component {
 
   render() {
     return (
-      <div>
-        <div className="row">
-          <div className="col">
-            <SmoothieList smoothies={this.props.smoothies} />
-          </div>
+      <div className="row">
+        <div className="col">
+          <SmoothieList smoothies={this.props.smoothies} />
         </div>
       </div>
     );

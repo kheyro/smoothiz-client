@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Switch, Route } from 'react-router';
 import PropTypes from 'prop-types';
 
@@ -29,7 +29,7 @@ class App extends Component {
     const { location } = this.props;
     const isModal = location.pathname.match(/\/smoothies\/\d+$/); // Unsafe: look for more accurate test as match returns an array
     return (
-      <div>
+      <Fragment>
         <Header />
         <div className="container">
           <Switch location={isModal ? this.previousLocation : location}>
@@ -43,7 +43,7 @@ class App extends Component {
           </Switch>
           <Route path="/smoothies/:id" component={SmoothieShow} />
         </div>
-      </div>
+      </Fragment>
     );
   }
 }
