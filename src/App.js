@@ -1,6 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { Switch, Route } from 'react-router';
 import PropTypes from 'prop-types';
+import fontawesome from '@fortawesome/fontawesome';
+import brands from '@fortawesome/fontawesome-free-brands';
+import solid from '@fortawesome/fontawesome-free-solid';
 
 import Header from './containers/Header';
 import Home from './containers/Home';
@@ -14,6 +17,8 @@ import SmoothieShow from './containers/smoothies/SmoothieShow';
 import RequireAuth from './containers/auth/RequireAuthentication';
 
 import './styles/styles.scss';
+
+fontawesome.library.add(brands, solid);
 
 class App extends Component {
   componentWillUpdate(nextProps) {
