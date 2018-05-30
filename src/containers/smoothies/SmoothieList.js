@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
+import globals from '../../../config/globals';
+import { ButtonAction, CardTitleLink } from '../../styles/ui';
 import { deleteSmoothie, editSmoothie } from '../../actions/smoothie';
 import { getUser } from '../../actions/user';
 import SmoothieForm from './SmoothieForm';
@@ -78,28 +81,62 @@ class SmoothieList extends Component {
           modal={this.state.modal}
           editData={this.state.editData}
         />
-        {this.props.smoothies &&
-          this.props.smoothies.map(smoothie => (
-            <div key={smoothie.id}>
-              <h6>
-                <Link to={{ pathname: `/smoothies/${smoothie.id}` }}>
-                  {smoothie.name}
-                </Link>
-              </h6>
-              {this.props.displayAction &&
-                this.props.auth.authenticated &&
-                this.props.auth.user.id === smoothie.user_id && (
-                  <p>
-                    <button onClick={() => this.editSmoothie(smoothie.id)}>
-                      Edit
-                    </button>
-                    <button onClick={() => this.deleteSmoothie(smoothie.id)}>
-                      Delete
-                    </button>
-                  </p>
-                )}
-            </div>
-          ))}
+        <div className="card-columns">
+          {this.props.smoothies &&
+            this.props.smoothies.map(smoothie => (
+              <div key={smoothie.id} className="card">
+                <img
+                  className="card-img-top"
+                  src={`${globals.API_SERVER}/smoothie/r/${smoothie.pictures}`}
+                  alt={smoothie.name}
+                />
+                <div className="card-body">
+                  <h5 className="card-title">
+                    <CardTitleLink
+                      to={{ pathname: `/smoothies/${smoothie.id}` }}>
+                      {smoothie.name}
+                    </CardTitleLink>
+                  </h5>
+                  <p className="card-text mb-2">{smoothie.description}</p>
+                  {this.props.displayAction &&
+                    this.props.auth.authenticated &&
+                    this.props.auth.user.id === smoothie.user_id && (
+                      <p className="card-action mb-0 text-right">
+                        <ButtonAction
+                          onClick={() => this.editSmoothie(smoothie.id)}
+                        >
+                          <FontAwesomeIcon icon={['fas', 'edit']} />
+                          edit
+                        </ButtonAction>
+                        <ButtonAction
+                          onClick={() => this.deleteSmoothie(smoothie.id)}
+                        >
+                          <FontAwesomeIcon icon={['fas', 'trash-alt']} />
+                          delete
+                        </ButtonAction>
+                      </p>
+                    )}
+                </div>
+                <div className="card-footer">
+                  <small>
+                    <span className="stats">
+                      <FontAwesomeIcon icon={['fas', 'eye']} /> {smoothie.views}
+                    </span>
+                    <span className="stats">
+                      <FontAwesomeIcon icon={['fas', 'heart']} /> {smoothie.likeUsers.length}
+                    </span>
+                    {smoothie.user && (
+                      <span className="author">
+                        <a href={`/users/${smoothie.user.id}`}>
+                          {smoothie.user.firstname} {smoothie.user.lastname}
+                        </a>
+                      </span>
+                    )}
+                  </small>
+                </div>
+              </div>
+            ))}
+        </div>
       </div>
     );
   }

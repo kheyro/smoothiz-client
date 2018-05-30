@@ -7,6 +7,7 @@ import { signupUser } from '../../actions/authentication';
 import { FormValidator, FVDisplayError } from '../../../helpers/formValidator';
 
 import * as layout from '../../styles/layout';
+import { BoxWrapper } from '../../styles/ui';
 import '../../../node_modules/react-datepicker/dist/react-datepicker.css';
 import globals from '../../../config/globals';
 
@@ -105,101 +106,102 @@ class Signup extends Component {
   render() {
     return (
       <layout.Centered>
-        <form onSubmit={this.onFormSubmit}>
-          <div className="form-group">
-            <label htmlFor="firstName">First name</label>
-            <input
-              className="form-control"
-              id="firstname"
-              name="firstname"
-              onChange={this.handleChange}
-              type="text"
-              value={this.state.firstname}
-            />
-            <FVDisplayError field={this.state.form.firstname} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="lastName">Last name</label>
-            <input
-              className="form-control"
-              id="lastname"
-              name="lastname"
-              onChange={this.handleChange}
-              type="text"
-              value={this.state.lastname}
-            />
-            <FVDisplayError field={this.state.form.lastname} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="picture">Picture</label>
-            <input
-              className="form-control"
-              id="picture"
-              name="picture"
-              onChange={this.handleChange}
-              type="file"
-            />
-            <FVDisplayError field={this.state.form.passwordConfirm} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="birthday">Birthday</label>
-            <DatePicker
-              className="form-control"
-              dateFormat="MM/DD/YYYY"
-              id="birthday"
-              name="birthday"
-              onChange={this.handleChange}
-              selected={this.state.birthday}
-            />
-            <FVDisplayError field={this.state.form.birthday} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              className="form-control"
-              id="email"
-              name="email"
-              onChange={this.handleChange}
-              type="text"
-              value={this.state.email}
-            />
-            <FVDisplayError field={this.state.form.email} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              className="form-control"
-              id="password"
-              name="password"
-              onChange={this.handleChange}
-              type="password"
-              value={this.state.password}
-            />
-            <FVDisplayError field={this.state.form.password} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="passwordConfirm">Confirm Password</label>
-            <input
-              className="form-control"
-              id="passwordConfirm"
-              name="passwordConfirm"
-              onChange={this.handleChange}
-              type="password"
-              value={this.state.passwordConfirm}
-            />
-            <FVDisplayError field={this.state.form.passwordConfirm} />
-          </div>
-          {this.renderAlert()}
-          <button type="submit" className="btn btn-primary mr-2">
-            Sign up
-          </button>
-          <a
-            className="btn btn-info"
-            href={`${globals.API_SERVER}/auth/facebook`}
-          >
-            Signin with Facebook
-          </a>
-        </form>
+        <BoxWrapper>
+          <form onSubmit={this.onFormSubmit}>
+            <div className="form-group">
+              <label htmlFor="firstName">First name</label>
+              <input
+                className="form-control"
+                id="firstname"
+                name="firstname"
+                onChange={this.handleChange}
+                type="text"
+                value={this.state.firstname}
+              />
+              <FVDisplayError field={this.state.form.firstname} />
+            </div>
+            <div className="form-group">
+              <label htmlFor="lastName">Last name</label>
+              <input
+                className="form-control"
+                id="lastname"
+                name="lastname"
+                onChange={this.handleChange}
+                type="text"
+                value={this.state.lastname}
+              />
+              <FVDisplayError field={this.state.form.lastname} />
+            </div>
+            <div className="form-group">
+              <label htmlFor="picture">Picture</label>
+              <input
+                className="form-control"
+                id="picture"
+                name="picture"
+                onChange={this.handleChange}
+                type="file"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="birthday">Birthday</label>
+              <DatePicker
+                className="form-control"
+                dateFormat="MM/DD/YYYY"
+                id="birthday"
+                name="birthday"
+                onChange={this.handleChange}
+                selected={this.state.birthday}
+              />
+              <FVDisplayError field={this.state.form.birthday} />
+            </div>
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input
+                className="form-control"
+                id="email"
+                name="email"
+                onChange={this.handleChange}
+                type="text"
+                value={this.state.email}
+              />
+              <FVDisplayError field={this.state.form.email} />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                className="form-control"
+                id="password"
+                name="password"
+                onChange={this.handleChange}
+                type="password"
+                value={this.state.password}
+              />
+              <FVDisplayError field={this.state.form.password} />
+            </div>
+            <div className="form-group">
+              <label htmlFor="passwordConfirm">Confirm Password</label>
+              <input
+                className="form-control"
+                id="passwordConfirm"
+                name="passwordConfirm"
+                onChange={this.handleChange}
+                type="password"
+                value={this.state.passwordConfirm}
+              />
+              <FVDisplayError field={this.state.form.passwordConfirm} />
+            </div>
+            {this.renderAlert()}
+            <button type="submit" className="btn btn-primary mr-2">
+              Sign up
+            </button>
+            <a
+              className="btn btn-info"
+              href={`${globals.API_SERVER}/auth/facebook`}
+            >
+              Signin with Facebook
+            </a>
+          </form>
+        </BoxWrapper>
       </layout.Centered>
     );
   }

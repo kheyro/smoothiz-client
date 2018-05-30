@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import * as layout from '../../styles/layout';
 import globals from '../../../config/globals';
+import { BoxWrapper } from '../../styles/ui';
 import { FormValidator, FVDisplayError } from '../../../helpers/formValidator';
 import { signinUser } from '../../actions/authentication';
 
@@ -61,42 +62,44 @@ class Signin extends Component {
   render() {
     return (
       <layout.Centered>
-        <form onSubmit={this.onFormSubmit}>
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              className="form-control"
-              id="email"
-              name="email"
-              onChange={this.handleChange}
-              type="text"
-              value={this.state.email}
-            />
-            <FVDisplayError field={this.state.form.email} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              className="form-control"
-              id="password"
-              name="password"
-              onChange={this.handleChange}
-              type="password"
-              value={this.state.password}
-            />
-            <FVDisplayError field={this.state.form.password} />
-          </div>
-          {this.renderAlert()}
-          <button type="submit" className="btn btn-primary mr-2">
-            Sign in
-          </button>
-          <a
-            className="btn btn-info"
-            href={`${globals.API_SERVER}/auth/facebook`}
-          >
-            Signin with Facebook
-          </a>
-        </form>
+        <BoxWrapper>
+          <form onSubmit={this.onFormSubmit}>
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input
+                className="form-control"
+                id="email"
+                name="email"
+                onChange={this.handleChange}
+                type="text"
+                value={this.state.email}
+              />
+              <FVDisplayError field={this.state.form.email} />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                className="form-control"
+                id="password"
+                name="password"
+                onChange={this.handleChange}
+                type="password"
+                value={this.state.password}
+              />
+              <FVDisplayError field={this.state.form.password} />
+            </div>
+            {this.renderAlert()}
+            <button type="submit" className="btn btn-primary mr-2">
+              Sign in
+            </button>
+            <a
+              className="btn btn-info"
+              href={`${globals.API_SERVER}/auth/facebook`}
+            >
+              Signin with Facebook
+            </a>
+          </form>
+        </BoxWrapper>
       </layout.Centered>
     );
   }

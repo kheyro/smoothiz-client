@@ -228,28 +228,32 @@ class SmoothieForm extends Component {
 
   renderCategoryIds() {
     return this.state.categoryIds.map((category, i) => (
-      <div className="form-group" key={category}>
-        <label htmlFor={`category_ids_${i}`} className="sr-only">
-          Category
-        </label>
-        <select
-          className="form-control"
-          id={`category_ids_${i}`}
-          name="category_ids"
-          onChange={e => this.handleCatChange(e, i)}
-          value={category}
-        >
-          <option value="0">Select Category</option>
-          {this.renderCategory()}
-        </select>
-        {this.state.categoryIds.length > 1 && (
-          <button
-            className="btn btn-danger"
-            onClick={e => this.removeCategoryField(e, i)}
+      <div className="form-row" key={category}>
+        <div className="col-8">
+          <label htmlFor={`category_ids_${i}`} className="sr-only">
+            Category
+          </label>
+          <select
+            className="form-control"
+            id={`category_ids_${i}`}
+            name="category_ids"
+            onChange={e => this.handleCatChange(e, i)}
+            value={category}
           >
-            -
-          </button>
-        )}
+            <option value="0">Select Category</option>
+            {this.renderCategory()}
+          </select>
+        </div>
+        <div className="col-2">
+          {this.state.categoryIds.length > 1 && (
+            <button
+              className="btn btn-danger"
+              onClick={e => this.removeCategoryField(e, i)}
+            >
+              -
+            </button>
+          )}
+        </div>
         <FVDisplayError field={this.state.form.categoryIds} index={i} />
       </div>
     ));
@@ -270,7 +274,7 @@ class SmoothieForm extends Component {
   renderIngredients() {
     return this.state.ingredients.map((ingredient, i) => (
       <div className="form-row" key={ingredient.ingredientId}>
-        <div className="form-group col-4">
+        <div className="col-4">
           <label htmlFor={`ingredient_ids_${i}`}>Ingredients</label>
           <select
             name={`ingredient_ids_${i}`}
@@ -285,7 +289,7 @@ class SmoothieForm extends Component {
             ))}
           </select>
         </div>
-        <div className="form-group col-2">
+        <div className="col-2">
           <label htmlFor={`quantity_${i}`}>Qty</label>
           <input
             className="form-control"
@@ -295,7 +299,7 @@ class SmoothieForm extends Component {
             onChange={e => this.handleIngredientChange(e, i, 'quantity')}
           />
         </div>
-        <div className="form-group col-2">
+        <div className="col-2">
           <label htmlFor={`unit_ids_${i}`}>Units</label>
           <select
             name={`unit_ids_${i}`}
@@ -310,14 +314,16 @@ class SmoothieForm extends Component {
             ))}
           </select>
         </div>
-        {this.state.ingredients.length > 1 && (
-          <button
-            className="btn btn-danger"
-            onClick={e => this.removeIngredientField(e, i)}
-          >
-            -
-          </button>
-        )}
+        <div className="col-2 d-flex align-items-end">
+          {this.state.ingredients.length > 1 && (
+            <button
+              className="btn btn-danger"
+              onClick={e => this.removeIngredientField(e, i)}
+            >
+              -
+            </button>
+          )}
+        </div>
       </div>
     ));
   }
@@ -380,7 +386,9 @@ class SmoothieForm extends Component {
               />
             </div>
             <div className="form-group">
-              <div className="preview w-100">{this.renderPreviewPicture()}</div>
+              <div className="preview w-100 rounded mb-3">
+                {this.renderPreviewPicture()}
+              </div>
               <label htmlFor="pictures" className="sr-only">
                 Pictures
               </label>
@@ -410,9 +418,11 @@ class SmoothieForm extends Component {
               />
             </div>
             {this.renderCategoryIds()}
-            <button onClick={this.addCategoryField} className="btn btn-info">
-              Add Category
-            </button>
+            <div className="form-group">
+              <button onClick={this.addCategoryField} className="btn btn-info">
+                Add Category
+              </button>
+            </div>
             <div className="form-group">
               <label htmlFor="visibility">Visibility</label>
               <select

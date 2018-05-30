@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+import { BoxLinkLi, BoxLinkUl } from '../styles/ui';
 import { getCategories } from '../actions/category';
 
 class CategoryLinks extends Component {
@@ -12,13 +13,17 @@ class CategoryLinks extends Component {
 
   render() {
     const categoryLink = this.props.categories.map(category => (
-      <li key={category.id}>
+      <BoxLinkLi key={category.id}>
         <Link to={{ pathname: `/categories/${category.id}` }}>
           {category.name}
         </Link>
-      </li>
+      </BoxLinkLi>
     ));
-    return <ul>{categoryLink}</ul>;
+    return (
+      <div>
+        <BoxLinkUl>{categoryLink}</BoxLinkUl>
+      </div>
+    );
   }
 }
 

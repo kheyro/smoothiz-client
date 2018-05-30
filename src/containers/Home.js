@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import { getSmoothies } from '../actions/smoothie';
 
+import * as layout from '../styles/layout';
 import CategoryLinks from '../components/CategoryLinks';
 import SmoothieList from '../containers/smoothies/SmoothieList';
 
@@ -15,12 +16,12 @@ class Home extends Component {
   render() {
     return (
       <div className="row">
-        <div className="col-3">
+        <layout.SidebarLeft>
           <CategoryLinks />
-        </div>
-        <div className="col-9">
+        </layout.SidebarLeft>
+        <layout.SidebarContent>
           <SmoothieList smoothies={this.props.smoothies} />
-        </div>
+        </layout.SidebarContent>
       </div>
     );
   }

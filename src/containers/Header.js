@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { NavBarLink, NavBar } from '../styles/ui';
 
 class Header extends Component {
   renderLinks() {
@@ -9,17 +10,14 @@ class Header extends Component {
       return (
         <Fragment>
           <li className="nav-item">
-            <Link
-              className="nav-link"
-              to={{ pathname: `/users/${this.props.auth.user.id}` }}
-            >
+            <NavBarLink to={{ pathname: `/users/${this.props.auth.user.id}` }}>
               My Smoothies
-            </Link>
+            </NavBarLink>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" to="/signout">
+            <NavBarLink to="/signout">
               Sign Out
-            </Link>
+            </NavBarLink>
           </li>
         </Fragment>
       );
@@ -27,14 +25,14 @@ class Header extends Component {
     return (
       <Fragment>
         <li className="nav-item">
-          <Link className="nav-link" to="/signin">
+          <NavBarLink to="/signin">
             Sign In
-          </Link>
+          </NavBarLink>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/signup">
+          <NavBarLink to="/signup">
             Sign Up
-          </Link>
+          </NavBarLink>
         </li>
       </Fragment>
     );
@@ -42,21 +40,21 @@ class Header extends Component {
 
   render() {
     return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <Link className="navbar-brand" to="/">
-          Healthy Smoothie
-        </Link>
+      <NavBar className="navbar navbar-expand-lg mb-4 navbar-dark">
+        <NavBarLink className="navbar-brand" to="/">
+          Smoothiz
+        </NavBarLink>
         <div className="collapse navbar-collapse">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <Link className="nav-link" to="/">
+              <NavBarLink to="/">
                 Home
-              </Link>
+              </NavBarLink>
             </li>
             {this.renderLinks()}
           </ul>
         </div>
-      </nav>
+      </NavBar>
     );
   }
 }
