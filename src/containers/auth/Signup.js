@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { signupUser } from '../../actions/authentication';
 import { FormValidator, FVDisplayError } from '../../../helpers/formValidator';
 
+import * as layout from '../../styles/layout';
 import '../../../node_modules/react-datepicker/dist/react-datepicker.css';
 import globals from '../../../config/globals';
 
@@ -103,7 +104,7 @@ class Signup extends Component {
 
   render() {
     return (
-      <div>
+      <layout.Centered>
         <form onSubmit={this.onFormSubmit}>
           <div className="form-group">
             <label htmlFor="firstName">First name</label>
@@ -199,7 +200,7 @@ class Signup extends Component {
             Signin with Facebook
           </a>
         </form>
-      </div>
+      </layout.Centered>
     );
   }
 }

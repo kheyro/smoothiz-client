@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import * as layout from '../../styles/layout';
 import globals from '../../../config/globals';
 import { FormValidator, FVDisplayError } from '../../../helpers/formValidator';
 import { signinUser } from '../../actions/authentication';
@@ -59,7 +60,7 @@ class Signin extends Component {
 
   render() {
     return (
-      <div>
+      <layout.Centered>
         <form onSubmit={this.onFormSubmit}>
           <div className="form-group">
             <label htmlFor="email">Email</label>
@@ -96,7 +97,7 @@ class Signin extends Component {
             Signin with Facebook
           </a>
         </form>
-      </div>
+      </layout.Centered>
     );
   }
 }
