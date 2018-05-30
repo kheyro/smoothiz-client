@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { getUser } from '../../actions/user';
 import { signinFromSocial } from '../../actions/authentication';
 
+import * as layout from '../../styles/layout';
 import SmoothieList from '../smoothies/SmoothieList';
 import UserInfo from '../../components/user/UserInfo';
 import UserLinks from '../../components/user/UserLinks';
@@ -28,13 +29,13 @@ class UserPage extends Component {
   render() {
     return (
       <div className="row">
-        <div className="col-3">
+        <layout.SidebarLeft>
           <UserInfo user={this.props.currentUser} />
           {this.props.auth.authenticated && (
             <UserLinks userId={this.props.auth.user.id} />
           )}
-        </div>
-        <div className="col-9">
+        </layout.SidebarLeft>
+        <layout.SidebarContent>
           <SmoothieList
             displayAction
             smoothies={
@@ -43,7 +44,7 @@ class UserPage extends Component {
                 : this.props.currentUser.smoothies
             }
           />
-        </div>
+        </layout.SidebarContent>
       </div>
     );
   }
