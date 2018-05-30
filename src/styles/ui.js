@@ -13,9 +13,27 @@ import { Link } from 'react-router-dom';
 //   border-radius: 0.25rem;
 // `;
 
-export const BoxWrapper = props => (
-  <div className="mb-4 border rounded">{props.children}</div>
+const theme = {
+  smtBlue: '#3097d1',
+};
+
+export const NavBar = styled.nav`
+  background-color: ${theme.smtBlue};
+`;
+
+export const NavBarLink = props => (
+  <Link className="nav-link" {...props}>
+    {props.children}
+  </Link>
 );
+
+const BoxWrapperDiv = props => (
+  <div className={`mb-4 p-3 border rounded ${props.className}`}>{props.children}</div>
+);
+
+export const BoxWrapper = styled(BoxWrapperDiv)`
+  background-color: #fff;
+`;
 
 export const BoxLinkUl = props => (
   <ul className="list-group">{props.children}</ul>
@@ -25,22 +43,27 @@ export const BoxLinkLi = props => (
   <li className="list-group-item list-group-item-action">{props.children}</li>
 );
 
-export const NavBar = styled.nav`
-  background-color: #3097d1;
+export const ButtonAction = styled.button`
+  border: none;
+  background: none;
+  font-size: 0.85rem;
+  color: rgba(155, 155, 155, 0.5);
+  cursor: pointer;
+  padding: 0;
+  &:hover {
+    color: rgba(155, 155, 155, 0.75);
+  }
+  &:not(:first-child) {
+    margin-left: 10px;
+  }
+  svg {
+    margin-right: 2px;
+  }
 `;
 
-const NavLinkWrapper = props => (
-  <Link {...props} className={`nav-link ${props.className}`}>
-    {props.children}
-  </Link>
-);
-
-export const NavBarLink = styled(NavLinkWrapper)`
-  color: rgba(255, 255, 255, 0.5);
+export const CardTitleLink = styled(Link)`
+  color: #212529;
   &:hover {
-    color: rgba(255, 255, 255, 0.75);
-  }
-  &.active {
-    color: #fff;
+    color: #212529;
   }
 `;

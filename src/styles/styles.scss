@@ -1,6 +1,33 @@
 // Variable
 $body-bg: #f5f8fa;
 $blue: #3097d1;
+$font-size-base: 0.93rem;
+$font-weight-normal: 300;
 $link-hover-decoration: none;
 
 @import "../../node_modules/bootstrap/scss/bootstrap";
+
+input, textarea, select, button { font-weight: 300; }
+
+.card-footer {
+  color: rgba(43, 43, 43, 0.5);
+  .stats {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  .author {
+    float: right;
+    margin-top: 2px;
+    font-weight: 400;
+  }
+  a {
+    color: rgba(43, 43, 43, 0.5);
+  }
+  a:hover {
+    color: rgba(43, 43, 43, 0.75);
+  }
+}
+
+.form-row {
+  margin-bottom: 1em;
+}
