@@ -18,6 +18,7 @@ class CategoryPage extends Component {
     return (
       <div className="row">
         <div className="col">
+          <h1>{this.props.currentCategory.name} Smoothies</h1>
           <SmoothieList smoothies={this.props.smoothies} />
         </div>
       </div>
@@ -44,16 +45,30 @@ CategoryPage.propTypes = {
       visibility: PropTypes.number,
     })
   ),
+  currentCategory: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+  }),
 };
 
 CategoryPage.defaultProps = {
   getSmoothies: () => {},
   match: {},
   smoothies: [],
+  currentCategory: {
+    id: 0,
+    name: '',
+  },
 };
 
-const mapStateToProps = state => ({
-  smoothies: state.smoothies.all,
-});
+const mapStateToProps = (state, ownProps) => {
+  const category = state.categories.find(
+    cat => cat.id === +ownProps.match.params.id
+  );
+  return {
+    smoothies: state.smoothies.all,
+    currentCategory: category,
+  };
+};
 
 export default connect(mapStateToProps, { getSmoothies })(CategoryPage);
