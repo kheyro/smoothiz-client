@@ -1,13 +1,28 @@
 // Variable
+
 $body-bg: #f5f8fa;
 $blue: #3097d1;
 $font-size-base: 0.93rem;
 $font-weight-normal: 300;
+
+$h1-font-size: $font-size-base * 2;
+$h2-font-size: $font-size-base * 1.75;
+$h3-font-size: $font-size-base * 1.5;
+$h4-font-size: $font-size-base * 1.25;
+$h5-font-size: $font-size-base;
+
 $link-hover-decoration: none;
+$modal-lg: 930px;
 
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
 input, textarea, select, button { font-weight: 300; }
+.d-grid {
+  display: grid;
+}
+.form-row {
+  margin-bottom: 1em;
+}
 
 .card-footer {
   color: rgba(43, 43, 43, 0.5);
@@ -28,6 +43,46 @@ input, textarea, select, button { font-weight: 300; }
   }
 }
 
-.form-row {
-  margin-bottom: 1em;
+.modal-smoothie {
+  .modal {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  button.close {
+    z-index: 1060;
+    position: fixed;
+    top: 0px;
+    color: #fff;
+    right: 10px;
+    text-shadow: none;
+    opacity: 0.7;
+    font-size: 3rem;
+    font-weight: 300;
+  }
+  .modal-content {
+    height: 580px;
+  }
+  header {
+    a, a:hover{
+      color: rgba(43, 43, 43, 0.75);
+    }
+  }
+  h1 {
+    font-size: 1.7rem;
+  }
+  .ingredient h5 {
+    grid-column-end: span 2;
+  }
+  .description {
+    overflow-y: scroll;
+  }
+}
+
+.smoothie-meta {
+  font-size: 0.8rem;
+  color: rgba(155,155,155,0.5);
+}
+
+.ingredient {
+  grid-template-columns: 1fr 1fr;
 }

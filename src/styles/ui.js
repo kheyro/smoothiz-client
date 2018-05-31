@@ -50,6 +50,9 @@ export const ButtonAction = styled.button`
   color: rgba(155, 155, 155, 0.5);
   cursor: pointer;
   padding: 0;
+  &:focus {
+    outline:0;
+  }
   &:hover {
     color: rgba(155, 155, 155, 0.75);
   }
