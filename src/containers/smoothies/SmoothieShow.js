@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { history as historyPropTypes } from 'history-prop-types';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import moment from 'moment';
 
+import { ButtonAction } from '../../styles/ui';
 import globals from '../../../config/globals';
 import {
   getSmoothie,
@@ -39,64 +43,121 @@ class SmoothieShow extends Component {
     const { smoothie } = this.props;
     const counter =
       smoothie && smoothie.likeUsers ? smoothie.likeUsers.length : 0;
-    return <div>like: {counter}</div>;
+    const button = this.props.liked
+      ? { action: this.dislike, icon: 'fas' }
+      : { action: this.like, icon: 'far' };
+    return (
+      <ButtonAction onClick={button.action}>
+        <FontAwesomeIcon icon={[button.icon, 'heart']} /> {counter}
+      </ButtonAction>
+    );
   };
 
-  renderLikeButton = () => {
-    if (this.props.liked) {
-      return <button onClick={this.dislike}>Dislike</button>;
-    }
-    return <button onClick={this.like}>Like</button>;
+  renderPicture = () => {
+    const picture = this.props.smoothie.user.picture
+      ? `${globals.API_SERVER}/profile/r/${this.props.smoothie.user.picture}`
+      : `${globals.API_SERVER}/images/placeholder-profile-200x200.jpg`;
+    const fullname = `${this.props.smoothie.user.firstname} 
+    
+    ${this.props.smoothie.user.firstname}`;
+    return (
+      <img className="rounded-circle w-100" src={picture} alt={fullname} />
+    );
+  };
+
+  renderViews = () => (
+    <span className="stats">
+      <FontAwesomeIcon icon={['fas', 'eye']} /> {this.props.smoothie.views}
+    </span>
+  );
+
+  renderMeta = () => {
+    return (
+      <div className="smoothie-meta d-flex flex-row pt-2">
+        <div className="mr-2">{this.renderLikes()}</div>
+        <div>{this.renderViews()}</div>
+        <div className="ml-auto">
+          {moment(this.props.smoothie.updated_at).format('MMM Do, YY')}
+        </div>
+      </div>
+    );
+  };
+
+  renderIngredients = () => {
+    return this.props.smoothie.quantities.map(qty => {
+      const qtyUnit = `${qty.quantity} ${qty.unit.name}`;
+      return (
+        <div>
+          <span>{qtyUnit}</span> of <span>{qty.ingredient.name}</span>
+        </div>
+      );
+    });
   };
 
   render() {
+    const fullname = `${this.props.smoothie.user.firstname} 
+    ${this.props.smoothie.user.lastname}`;
     return (
-      <div tabIndex="-1">
-        <div className="">
-          <div
-            className="modal fade show d-block"
-            role="dialog"
-            style={{ position: 'relative', zIndex: '1050' }}
-            tabIndex="-1"
+      <div>
+        <div className="modal-smoothie">
+          <button
+            aria-label="Close"
+            className="close"
+            onClick={this.closeModal}
           >
-            <div className="modal-dialog" role="document">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h1 className="modal-title">
+            <span aria-hidden="true">×</span>
+          </button>
+          <div className="modal fade show d-block" role="dialog" tabIndex="-1">
+            <div
+              className="modal-dialog modal-dialog-centered modal-lg"
+              role="document"
+            >
+              <div className="modal-content flex-row">
+                {this.props.smoothie &&
+                  this.props.smoothie.pictures && (
+                    <img
+                      className="h-100 rounded-left"
+                      src={`${globals.API_SERVER}/smoothie/r/${
+                        this.props.smoothie.pictures
+                      }`}
+                      alt={this.props.smoothie.name}
+                    />
+                  )}
+                <article className="d-flex flex-fill flex-column pr-3 pl-3 pb-3">
+                  <header
+                    className="d-flex flex-row justify-content-start align-items-center pt-3 pb-3"
+                    style={{ borderBottom: '1px solid #efefef' }}
+                  >
+                    <div style={{ width: '40px' }}>{this.renderPicture()}</div>
+                    <div className="ml-2">
+                      <Link
+                        to={{
+                          pathname: `/users/${this.props.smoothie.user.id}`,
+                        }}
+                      >
+                        {fullname}
+                      </Link>
+                    </div>
+                  </header>
+                  {this.renderMeta()}
+                  <h1 className="modal-title pt-2 pb-2">
                     {this.props.smoothie && this.props.smoothie.name}
                   </h1>
-                  <button
-                    aria-label="Close"
-                    className="close"
-                    onClick={this.closeModal}
-                    type="button"
-                  >
-                    <span aria-hidden="true">×</span>
-                  </button>
-                </div>
-                <div className="modal-body">
-                  {this.props.smoothie &&
-                    this.props.smoothie.pictures && (
-                      <img
-                        src={`${globals.API_SERVER}/smoothie/r/${
-                          this.props.smoothie.pictures
-                        }`}
-                        alt={this.props.smoothie.name}
-                      />
-                    )}
-                  {this.props.smoothie && this.props.smoothie.description}
-                  {this.renderLikeButton()}
-                  {this.renderLikes()}
-                </div>
-                <div className="modal-footer">Footer</div>
+                  <div className="description flex-fill text-justify">
+                    <div className="d-grid ingredient mb-2">
+                      <h5>You&apos;ll need...</h5>
+                      {this.renderIngredients()}
+                    </div>
+                    <div>
+                      <h5>How it&apos;s done!</h5>
+                      {this.props.smoothie && this.props.smoothie.description}
+                    </div>
+                  </div>
+                </article>
               </div>
             </div>
           </div>
-          <div
-            className="modal-backdrop fade show"
-            onClick={this.closeModal}
-            role="presentation"
-          />
+          <div className="modal-backdrop fade show" role="presentation"/>
         </div>
       </div>
     );
@@ -131,6 +192,12 @@ SmoothieShow.propTypes = {
     views: PropTypes.number,
     visibility: PropTypes.number,
     likeUsers: PropTypes.arrayOf(PropTypes.string),
+    user: PropTypes.shape({
+      id: PropTypes.number,
+      firstname: PropTypes.string,
+      lastname: PropTypes.string,
+      picture: PropTypes.string,
+    }),
   }),
 };
 
@@ -142,7 +209,15 @@ SmoothieShow.defaultProps = {
   match: {},
   history: {},
   auth: {},
-  smoothie: {},
+  smoothie: {
+    user: {
+      id: 0,
+      firstname: '',
+      lastname: '',
+      picture: '',
+    },
+    quantities: [],
+  },
   liked: false,
 };
 
