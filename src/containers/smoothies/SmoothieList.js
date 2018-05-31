@@ -69,18 +69,24 @@ class SmoothieList extends Component {
   }
 
   render() {
+    if (this.props.smoothies.length === 0) {
+      return <div>Sorry... There is no smoothie yet...</div>;
+    }
     return (
       <div>
-        {this.props.auth.authenticated && (
-          <Button color="danger" onClick={this.toggle}>
-            Smoothiz
-          </Button>
-        )}
         <SmoothieForm
           toggle={this.toggle}
           modal={this.state.modal}
           editData={this.state.editData}
         />
+        {this.props.auth.authenticated &&
+          this.props.displayAddButton && (
+            <div className="mb-4">
+              <Button color="danger" size="sm" onClick={this.toggle}>
+                + Smoothiz
+              </Button>
+            </div>
+          )}
         <div className="card-columns">
           {this.props.smoothies &&
             this.props.smoothies.map(smoothie => (
