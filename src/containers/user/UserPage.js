@@ -27,6 +27,8 @@ class UserPage extends Component {
   }
 
   render() {
+    const fullname = `${this.props.currentUser.firstname} 
+    ${this.props.currentUser.lastname}`;
     return (
       <div className="row">
         <layout.SidebarLeft>
@@ -36,7 +38,9 @@ class UserPage extends Component {
           )}
         </layout.SidebarLeft>
         <layout.SidebarContent>
+          <h1>{`${fullname} Smoothies`}</h1>
           <SmoothieList
+            displayAddButton
             displayAction
             smoothies={
               /\/smoothies\/liked/.test(this.props.location.pathname)
