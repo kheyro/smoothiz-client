@@ -20,6 +20,14 @@ class Home extends Component {
           <CategoryLinks />
         </layout.SidebarLeft>
         <layout.SidebarContent>
+          <div>
+            <h1>Welcome to Smoothiz</h1>
+            <p>
+              {`The best place to manage and share your smoothies! Take few easy
+              steps to create your smoothies and to save them! Share them with
+              the world! Stay healthy, drink smoothiz!`}
+            </p>
+          </div>
           <SmoothieList smoothies={this.props.smoothies} />
         </layout.SidebarContent>
       </div>
