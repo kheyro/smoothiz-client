@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import fontawesome from '@fortawesome/fontawesome';
 import brands from '@fortawesome/fontawesome-free-brands';
 import solid from '@fortawesome/fontawesome-free-solid';
+import regular from '@fortawesome/fontawesome-free-regular';
 
 import Header from './containers/Header';
 import Home from './containers/Home';
@@ -18,7 +19,7 @@ import RequireAuth from './containers/auth/RequireAuthentication';
 
 import './styles/styles.scss';
 
-fontawesome.library.add(brands, solid);
+fontawesome.library.add(brands, solid, regular);
 
 class App extends Component {
   componentWillUpdate(nextProps) {
