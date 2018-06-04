@@ -32,7 +32,7 @@ export function signinUser({ email, password }) {
         dispatch({ type: actionTypes.AUTH_USER, payload: response.data.user });
         // localStorage.setItem('user', JSON.stringify(response.data.user));
         localStorage.setItem('token', response.data.token);
-        history.push('/features');
+        history.push(`/users/${response.data.user.id}`);
       })
       .catch(() => dispatch(authError('Bad login info')));
   };
@@ -61,15 +61,5 @@ export function signupUser(userInfo) {
         history.push('/features');
       })
       .catch(error => dispatch(authError(error.response.data.error)));
-  };
-}
-
-export function fetchMessage() {
-  return () => {
-    axios
-      .get(`${API_SERVER}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
-      .then(response => console.log(response));
   };
 }
