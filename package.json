@@ -4,10 +4,12 @@
   "description": "Smoothiz Client",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
     "build": "webpack --env.production --progress --config webpack.prod.js",
     "dev": "webpack-dev-server --env.development --hot --open --config webpack.dev.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint --format=node_modules/eslint-formatter-pretty ."
+    "lint": "eslint --format=node_modules/eslint-formatter-pretty .",
+    "heroku-postbuild": "npm run build"
   },
   "author": "Denis Atkesone",
   "license": "MIT",
