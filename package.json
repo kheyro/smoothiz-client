@@ -4,8 +4,8 @@
   "description": "Smoothiz Client",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --progress",
-    "dev": "webpack-dev-server --hot --open",
+    "build": "webpack --env.production --progress --config webpack.prod.js",
+    "dev": "webpack-dev-server --env.development --hot --open --config webpack.dev.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --format=node_modules/eslint-formatter-pretty ."
   },
@@ -23,6 +23,7 @@
     "@fortawesome/react-fontawesome": "0.0.20",
     "axios": "^0.18.0",
     "bootstrap": "^4.1.1",
+    "clean-webpack-plugin": "^0.1.19",
     "history": "^4.7.2",
     "history-prop-types": "^2.5.2",
     "js-cookie": "^2.2.0",
@@ -38,6 +39,7 @@
     "redux": "^4.0.0",
     "redux-thunk": "^2.2.0",
     "styled-components": "^3.3.0",
+    "uglifyjs-webpack-plugin": "^1.2.5",
     "validator": "^10.2.0"
   },
   "devDependencies": {
