@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Smoothiz Client",
   "main": "index.js",
+  "engines": {
+    "node": "10.3.0",
+    "npm": "6.1.0"
+  },
   "scripts": {
     "start": "node server.js",
     "build": "webpack --env.production --progress --config webpack.prod.js",
