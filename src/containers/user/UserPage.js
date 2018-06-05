@@ -15,9 +15,12 @@ class UserPage extends Component {
   componentDidMount() {
     this.props.getUser(this.props.match.params.id);
     // if comes from redirection social signin
-    if (Cookies.get('token')) {
-      this.props.signinFromSocial();
-    }
+    // if (Cookies.get('token')) {
+    //   this.props.signinFromSocial();
+    // }
+    const token = window.location.hash.substr(1);
+    const userId = this.props.match.params.id;
+    if (token) this.props.signinFromSocial(token, userId);
   }
 
   componentDidUpdate(prevProps) {

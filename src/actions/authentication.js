@@ -11,14 +11,15 @@ export function authError(error) {
   };
 }
 
-export function signinFromSocial() {
-  const cookiedToken = Cookies.get('token');
-  const cookiedUser = JSON.parse(Cookies.get('user'));
-  if (cookiedToken && cookiedUser) {
-    localStorage.setItem('token', cookiedToken);
-    Cookies.remove('token');
-    Cookies.remove('user');
-    return { type: actionTypes.AUTH_USER, payload: cookiedUser };
+export function signinFromSocial(token, id) {
+  // const cookiedToken = Cookies.get('token');
+  // const cookiedUser = JSON.parse(Cookies.get('user'));
+  const user = { id, firstname: '', lastname: '' };
+  if (token) {
+    localStorage.setItem('token', token);
+    // Cookies.remove('token');
+    // Cookies.remove('user');
+    return { type: actionTypes.AUTH_USER, payload: user };
   }
   return false;
 }
