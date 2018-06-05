@@ -69,9 +69,6 @@ class SmoothieList extends Component {
   }
 
   render() {
-    if (this.props.smoothies.length === 0) {
-      return <div>Sorry... There is no smoothie yet...</div>;
-    }
     return (
       <div>
         <SmoothieForm
@@ -87,6 +84,9 @@ class SmoothieList extends Component {
               </Button>
             </div>
           )}
+        {this.props.smoothies.length === 0 && (
+          <div>Sorry... There is no smoothie yet...</div>
+        )}
         <div className="card-columns">
           {this.props.smoothies &&
             this.props.smoothies.map(smoothie => (
