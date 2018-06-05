@@ -11,10 +11,10 @@ export function authError(error) {
   };
 }
 
-export function signinFromSocial(token, id) {
+export function signinFromSocial(token, userId) {
   // const cookiedToken = Cookies.get('token');
   // const cookiedUser = JSON.parse(Cookies.get('user'));
-  const user = { id, firstname: '', lastname: '' };
+  const user = { id: +userId, firstname: '', lastname: '' };
   if (token) {
     localStorage.setItem('token', token);
     // Cookies.remove('token');
