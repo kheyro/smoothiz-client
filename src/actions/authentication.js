@@ -2,8 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import actionTypes from './actionTypes';
 import history from '../../config/history';
-
-const API_SERVER = 'http://localhost:3000';
+import globals from '../../config/globals';
 
 export function authError(error) {
   return {
@@ -27,7 +26,7 @@ export function signinFromSocial() {
 export function signinUser({ email, password }) {
   return dispatch => {
     axios
-      .post(`${API_SERVER}/signin`, { email, password })
+      .post(`${globals.API_SERVER}/signin`, { email, password })
       .then(response => {
         dispatch({ type: actionTypes.AUTH_USER, payload: response.data.user });
         // localStorage.setItem('user', JSON.stringify(response.data.user));
@@ -53,7 +52,7 @@ export function signupUser(userInfo) {
 
   return dispatch => {
     axios
-      .post(`${API_SERVER}/signup`, formData, config)
+      .post(`${globals.API_SERVER}/signup`, formData, config)
       .then(response => {
         dispatch({ type: actionTypes.AUTH_USER, payload: response.data.user });
         // localStorage.setItem('user', JSON.stringify(response.data.user));

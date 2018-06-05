@@ -1,7 +1,6 @@
 import axios from 'axios';
 import actionTypes from './actionTypes';
-
-const API_SERVER = 'http://localhost:3000';
+import globals from '../../config/globals';
 
 export function createSmoothie(data) {
   const config = {
@@ -16,7 +15,7 @@ export function createSmoothie(data) {
   formData.append('smoothie', JSON.stringify(smoothie));
   return () =>
     axios
-      .post(`${API_SERVER}/smoothies`, formData, config)
+      .post(`${globals.API_SERVER}/smoothies`, formData, config)
       .then(res => res)
       .catch(err => console.log(err));
 }
@@ -30,7 +29,7 @@ export function getSmoothies(filter) {
   }
   return dispatch =>
     axios
-      .get(`${API_SERVER}${url}`)
+      .get(`${globals.API_SERVER}${url}`)
       .then(res =>
         dispatch({
           type: actionTypes.GET_SMOOTHIES,
@@ -43,7 +42,7 @@ export function getSmoothies(filter) {
 export function getSmoothie(smoothieId) {
   return dispatch =>
     axios
-      .get(`${API_SERVER}/smoothies/${smoothieId}`)
+      .get(`${globals.API_SERVER}/smoothies/${smoothieId}`)
       .then(res =>
         dispatch({ type: actionTypes.GET_SMOOTHIE, payload: res.data.smoothie })
       )
@@ -63,7 +62,11 @@ export function editSmoothie(data) {
   formData.append('smoothie', JSON.stringify(smoothie));
   return () =>
     axios
-      .patch(`${API_SERVER}/smoothies/${data.editingId}`, formData, config)
+      .patch(
+        `${globals.API_SERVER}/smoothies/${data.editingId}`,
+        formData,
+        config
+      )
       .then(res => res)
       .catch(err => console.log(err));
 }
@@ -71,7 +74,7 @@ export function editSmoothie(data) {
 export function deleteSmoothie(smoothieId) {
   return () =>
     axios
-      .delete(`${API_SERVER}/smoothies/${smoothieId}`, {
+      .delete(`${globals.API_SERVER}/smoothies/${smoothieId}`, {
         headers: { authorization: localStorage.getItem('token') },
       })
       .then(res => res)
@@ -81,7 +84,7 @@ export function deleteSmoothie(smoothieId) {
 export function likeSmoothie(smoothieId) {
   return () =>
     axios
-      .get(`${API_SERVER}/smoothies/${smoothieId}/like`, {
+      .get(`${globals.API_SERVER}/smoothies/${smoothieId}/like`, {
         headers: { authorization: localStorage.getItem('token') },
       })
       .then(() => this.getSmoothie(smoothieId))
@@ -91,7 +94,7 @@ export function likeSmoothie(smoothieId) {
 export function dislikeSmoothie(smoothieId) {
   return () =>
     axios
-      .get(`${API_SERVER}/smoothies/${smoothieId}/dislike`, {
+      .get(`${globals.API_SERVER}/smoothies/${smoothieId}/dislike`, {
         headers: { authorization: localStorage.getItem('token') },
       })
       .then(() => this.getSmoothie(smoothieId))

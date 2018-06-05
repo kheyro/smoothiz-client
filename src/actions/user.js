@@ -1,12 +1,11 @@
 import axios from 'axios';
 import actionTypes from './actionTypes';
-
-const API_SERVER = 'http://localhost:3000';
+import globals from '../../config/globals';
 
 export function getUser(userId) {
   return dispatch =>
     axios
-      .get(`${API_SERVER}/users/${userId}`, {
+      .get(`${globals.API_SERVER}/users/${userId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       })
       .then(res => dispatch({ type: actionTypes.GET_USER, payload: res.data }))
