@@ -6,7 +6,7 @@ import { BoxWrapper } from '../../styles/ui';
 
 const UserInfo = ({ user }) => {
   const profilePicture = user.picture
-    ? `${globals.API_SERVER}/profile/r/${user.picture}`
+    ? `${globals.AWS_BUCKET}/profile/${user.picture}`
     : `${globals.API_SERVER}/images/placeholder-profile-200x200.jpg`;
   return (
     <BoxWrapper className="text-center">
