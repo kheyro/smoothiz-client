@@ -55,7 +55,7 @@ class SmoothieShow extends Component {
 
   renderPicture = () => {
     const picture = this.props.smoothie.user.picture
-      ? `${globals.API_SERVER}/profile/r/${this.props.smoothie.user.picture}`
+      ? `${globals.AWS_BUCKET}/profile/${this.props.smoothie.user.picture}`
       : `${globals.API_SERVER}/images/placeholder-profile-200x200.jpg`;
     const fullname = `${this.props.smoothie.user.firstname} 
     
