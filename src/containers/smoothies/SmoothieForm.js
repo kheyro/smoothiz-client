@@ -343,7 +343,7 @@ class SmoothieForm extends Component {
     if (this.state.pictures instanceof File && this.state.preview) {
       picture = this.state.preview;
     } else if (this.state.editPictures && this.state.editingId > 0) {
-      picture = `${globals.API_SERVER}/smoothie/r/${this.state.editPictures}`;
+      picture = `${globals.AWS_BUCKET}/smoothie/${this.state.editPictures}`;
     }
     return (
       <Fragment>

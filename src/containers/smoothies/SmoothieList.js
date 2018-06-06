@@ -93,7 +93,11 @@ class SmoothieList extends Component {
               <div key={smoothie.id} className="card">
                 <img
                   className="card-img-top"
-                  src={`${globals.API_SERVER}/smoothie/r/${smoothie.pictures}`}
+                  src={
+                    smoothie.pictures
+                      ? `${globals.AWS_BUCKET}/smoothie/${smoothie.pictures}`
+                      : 'https://smoothiz.s3.amazonaws.com/smoothie/smoothie-placeholder.jpg'
+                  }
                   alt={smoothie.name}
                 />
                 <div className="card-body">

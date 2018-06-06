@@ -113,16 +113,17 @@ class SmoothieShow extends Component {
               role="document"
             >
               <div className="modal-content flex-row">
-                {this.props.smoothie &&
-                  this.props.smoothie.pictures && (
-                    <img
-                      className="h-100 rounded-left"
-                      src={`${globals.API_SERVER}/smoothie/r/${
-                        this.props.smoothie.pictures
-                      }`}
-                      alt={this.props.smoothie.name}
-                    />
-                  )}
+                {this.props.smoothie && (
+                  <img
+                    className="h-100 rounded-left"
+                    src={
+                      this.props.smoothie.pictures
+                        ? `${globals.AWS_BUCKET}/smoothie/${this.props.smoothie.pictures}`
+                        : 'https://smoothiz.s3.amazonaws.com/smoothie/smoothie-placeholder.jpg'
+                    }
+                    alt={this.props.smoothie.name}
+                  />
+                )}
                 <article className="d-flex flex-fill flex-column pr-3 pl-3 pb-3">
                   <header
                     className="d-flex flex-row justify-content-start align-items-center pt-3 pb-3"
