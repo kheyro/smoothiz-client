@@ -58,7 +58,7 @@ export function signupUser(userInfo) {
         dispatch({ type: actionTypes.AUTH_USER, payload: response.data.user });
         // localStorage.setItem('user', JSON.stringify(response.data.user));
         localStorage.setItem('token', response.data.token);
-        history.push('/features');
+        history.push(`/users/${response.data.user.id}`);
       })
       .catch(error => dispatch(authError(error.response.data.error)));
   };
