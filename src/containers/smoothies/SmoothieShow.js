@@ -151,7 +151,10 @@ class SmoothieShow extends Component {
                     </div>
                     <div>
                       <h5>How it&apos;s done!</h5>
-                      {this.props.smoothie && this.props.smoothie.description}
+                      <p>
+                        {this.props.smoothie && this.props.smoothie.description}
+                      </p>
+                      <p>{this.props.smoothie && this.props.smoothie.recipe}</p>
                     </div>
                   </div>
                 </article>
