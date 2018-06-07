@@ -40,7 +40,7 @@ class SmoothieList extends Component {
       pictures,
     } = smoothie;
     // convert name_id to nameId
-    for (let i = 0; i < categories.length; i += 1) {
+    for (let i = 0; i < quantities.length; i += 1) {
       quantities[i].ingredientId = quantities[i].ingredient_id;
       quantities[i].unitId = quantities[i].unit_id;
       delete quantities[i].ingredient_id;
